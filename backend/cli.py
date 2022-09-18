@@ -7,7 +7,6 @@ def parse_arguments():
     parser = argparse.ArgumentParser(usage="%(prog)s", description="Manage installed L4D2 mods",
                                      epilog="Repo : https://github.com/pukmajster/l4d2-modman")
     parser.add_argument('-b', '--build', help='generate mod cache')
-    parser.add_argument('-cr', '--configread', help='read modman\'s config file')
     return parser.parse_args()
 
 
@@ -18,5 +17,5 @@ def main():
     if args.build:
         print("building cache")
     
-    
+
     
