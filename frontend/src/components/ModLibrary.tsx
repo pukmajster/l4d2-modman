@@ -6,6 +6,7 @@ import {
   filterMeleeAtom,
   filterMiscAtom,
   filterSurvivorAtom,
+  filterUtilsAtom,
   searchTermAtom,
 } from "@/state/library";
 import { cache } from "@/temp/workshop";
@@ -21,7 +22,8 @@ export default function ModLibrary() {
   const [grenadeFilter, setGrenadeFilter] = useRecoilState(filterGrenadeAtom);
   const [meleeFilter, setMeleeFilter] = useRecoilState(filterMeleeAtom);
   const [gunFilter, setGunFilter] = useRecoilState(filterGunAtom);
-  const [miscFilter, setMiscFilter] = useRecoilState(filterMiscAtom);
+  const [miscFilter, setMiscFilter] = useRecoilState(filterUtilsAtom);
+  const [utilsFilter, setUtisFilter] = useRecoilState(filterMiscAtom);
   const [searchTerm, setSearchTerm] = useRecoilState(searchTermAtom);
 
   return (
@@ -44,16 +46,13 @@ export default function ModLibrary() {
               return;
           }
 
-          // if (libraryFilterCategory != " ") {
-          //   if (!Object.keys(thisMod).includes(libraryFilterCategory)) return;
-          // }
-
           if (
             gunFilter ||
             meleeFilter ||
             grenadeFilter ||
             survivorFilter ||
             infectedFilter ||
+            utilsFilter ||
             miscFilter
           ) {
             let matchingFilters = 0;
@@ -63,6 +62,7 @@ export default function ModLibrary() {
             if (thisMod.categories?.includes(grenadeFilter)) matchingFilters++;
             if (thisMod.categories?.includes(survivorFilter)) matchingFilters++;
             if (thisMod.categories?.includes(infectedFilter)) matchingFilters++;
+            if (thisMod.categories?.includes(utilsFilter)) matchingFilters++;
 
             if (matchingFilters == 0) return;
           }
