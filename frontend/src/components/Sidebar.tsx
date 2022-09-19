@@ -9,9 +9,11 @@ import {
   filterUtilsAtom,
   searchTermAtom,
 } from "@/state/library";
-import { Button, MenuItem, TextField } from "@mui/material";
+import { Button, InputAdornment, MenuItem, TextField } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useRecoilState } from "recoil";
+
+import SearchIcon from "@mui/icons-material/Search";
 
 export default function Sidebar() {
   const [survivorFilter, setSurvivorFilter] =
@@ -42,6 +44,13 @@ export default function Sidebar() {
         label="Search"
         onChange={(e) => setSearchTerm(e.target.value)}
         value={searchTerm}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon sx={{ width: 16 }} />
+            </InputAdornment>
+          ),
+        }}
       ></TextField>
 
       <TextField
