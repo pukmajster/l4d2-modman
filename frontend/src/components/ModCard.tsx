@@ -1,12 +1,16 @@
 import { Mod } from "@/constants/interfaces";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
-import { Box, Chip, Stack, Typography } from "@mui/material";
+import OpenInBrowserIcon from "@mui/icons-material/OpenInBrowser";
+import { Box, Button, Chip, Collapse, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 
 interface ModEntryProps extends Mod {}
-export default function ModCard(props: any) {
+
+export default function ModCard(props: Mod) {
   const [enabled, setEnabled] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+
   const isCorrupt = props?.error;
 
   function handleModEnabled() {
@@ -16,22 +20,32 @@ export default function ModCard(props: any) {
   const bgcolor = enabled ? "rgba(0,255,0,0.05)" : "rgba(255,0,0,0.05)";
   const corruptcolor = isCorrupt ? "rgba(14,14,14.22)" : "transparent";
 
-  function openModInBrowser() {
-    window.open("https://google.com", "_blank");
+  function openModInBrowser(steamid: string) {
+    window.open(
+      `https://steamcommunity.com/sharedfiles/filedetails/?id=${steamid}`,
+      "_blank"
+    );
   }
 
   return (
-    <Box pb={0}>
+    <Stack pb={0} sx={{ contentVisibility: "auto" }}>
       <Box
         flex={1}
         textAlign={"left"}
         display={"grid"}
         flexDirection="column"
-        gridTemplateColumns={"120px auto"}
+        gridTemplateColumns={"minmax(196px, 20%) auto"}
         key={props.id}
         bgcolor={"rgba(52,52,52,0.3)"}
         borderRadius={1}
         overflow="hidden"
+        sx={{
+          gridTemplateColumns: { xs: "1fr", md: "minmax(196px, 15%) auto" },
+          transition: "background-color 0.14s ease",
+          "&:hover": {
+            bgcolor: "rgba(52,52,52,0.5)",
+          },
+        }}
       >
         <Box
           width="100%"
@@ -54,32 +68,66 @@ export default function ModCard(props: any) {
           width="100%"
           display={"flex"}
           justifyContent="space-between"
-          p={2}
+          p={1.5}
         >
-          <Box>
-            <Typography variant="h6">
-              {props?.addontitle ?? `Corrupt addoninfo for ${props.id}`}
-              <Box component={"span"} pl={1}></Box>
-              <Typography variant="caption" fontSize={10}>
-                {props?.addonauthor}
+          <Stack justifyContent={"space-between"}>
+            <Stack>
+              <Typography variant="h6">
+                {props?.addontitle ?? `Corrupt addoninfo for ${props.id}`}
+                <Box component={"span"} pl={1}></Box>
+                <Typography variant="caption" fontSize={10}>
+                  {props?.addonauthor}
+                </Typography>
               </Typography>
 
-              <Stack mt={1} spacing={1} direction="row">
-                {props.categories.map((cat: string) => (
+              <Box mt={1} display="flex" gap={1} flexWrap="wrap">
+                {props?.categories.map((cat: string) => (
                   <Chip label={cat} size="small"></Chip>
                 ))}
-              </Stack>
-            </Typography>
-          </Box>
+              </Box>
+            </Stack>
+            <Stack mt={1} direction="row">
+              <Button
+                onClick={() => openModInBrowser(props.id)}
+                startIcon={<OpenInBrowserIcon />}
+              >
+                view in Workshop
+              </Button>
+
+              <Button
+                onClick={() => setExpanded((old) => !old)}
+                startIcon={<OpenInBrowserIcon />}
+              >
+                details
+              </Button>
+            </Stack>
+          </Stack>
 
           {/*  <Box>
-            <Button onClick={openModInBrowser} startIcon={<OpenInNewIcon />}>
-              Workshop
-            </Button>
+            
           </Box> */}
         </Box>
       </Box>
-    </Box>
+
+      <Collapse in={expanded}>
+        <Box bgcolor={"#191919"} p={2} borderTop="1px solid #101010">
+          <Box display={"grid"} gap={1} gridTemplateColumns="200px 1fr">
+            <Typography>Description</Typography>
+            <div>{props.addondescription}</div>
+            <Typography>Tagline</Typography>
+            <div>{props.addontagline}</div>
+            <Typography>Version</Typography>
+            <div>v{props.addonversion}</div>
+            <Typography>Files</Typography>
+            <Typography fontSize={12}>
+              {props.files.map((f: string) => (
+                <div>{f}</div>
+              ))}
+            </Typography>
+          </Box>
+        </Box>
+      </Collapse>
+    </Stack>
   );
 }
 
