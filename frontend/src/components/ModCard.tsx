@@ -81,7 +81,7 @@ export default function ModCard(props: Mod) {
               </Typography>
 
               <Box mt={1} display="flex" gap={1} flexWrap="wrap">
-                {props?.categories.map((cat: string) => (
+                {props?.categories?.map((cat: string) => (
                   <Chip label={cat} size="small"></Chip>
                 ))}
               </Box>

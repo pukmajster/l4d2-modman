@@ -1,10 +1,14 @@
-import { Dialog, DialogContent, DialogTitle } from "@mui/material";
+import useConfigProperty from "@/hooks/useConfigProperty";
+import { gameDirAtom } from "@/state/config";
+import { TextField } from "@mui/material";
 
 export default function SettingsDialog() {
+  const [gameDir, setGameDir] = useConfigProperty("gameDir", gameDirAtom);
+
   return (
-    <Dialog open={false}>
-      <DialogTitle>Settings</DialogTitle>
-      <DialogContent></DialogContent>
-    </Dialog>
+    <TextField
+      value={gameDir}
+      onChange={(e) => setGameDir(e.target.value)}
+    ></TextField>
   );
 }

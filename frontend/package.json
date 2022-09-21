@@ -1,9 +1,9 @@
 {
-  "name": "electron-vite-react",
-  "productName": "Electron",
+  "name": "l4d2-modman",
+  "productName": "L4D2 ModMan",
   "private": true,
   "version": "2.0.0",
-  "description": "Vite React Electron boilerplate.",
+  "description": "L4d2 mod manager",
   "author": "草鞋没号 <308487730@qq.com>",
   "license": "MIT",
   "main": "dist/electron/main/index.js",
@@ -19,11 +19,14 @@
     "@emotion/styled": "^11.10.4",
     "@mui/icons-material": "^5.10.3",
     "@mui/material": "^5.10.5",
+    
+    "electron-store": "^8.1.0",
     "recoil": "^0.7.5"
   },
   "devDependencies": {
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
+    "@types/electron-store": "^3.2.0",
     "@vitejs/plugin-react": "^2.0.1",
     "electron": "^20.0.2",
     "electron-builder": "^23.3.3",
