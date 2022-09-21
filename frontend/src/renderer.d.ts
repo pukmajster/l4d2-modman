@@ -1,20 +1,41 @@
 export interface IConfigAPI {
-  get: (data: STORE_GET) => string;
-  set: (data: STORE_SET) => void;
+  get: (data: CONFIG_STORE_GET) => string;
+  set: (data: CONFIG_STORE_SET) => void;
 }
 
-declare global {
-  interface Window {
-    configApi: IElectronAPI;
-  }
+export interface IProfileAPI {
+  get: (data: PROFILE_STORE_GET) => string;
+  set: (data: PROFILE_STORE_SET) => void;
 }
 
-export interface STORE_SET {
-  property: string;
+// Properties
+type IConfigProperty = "gameDir";
+type IProfileProperty = "selectedPreset" | "presets";
+
+export interface PROFILE_STORE_SET {
+  property: IProfileProperty;
   value: string;
 }
 
-export interface STORE_GET {
-  property: string;
+export interface PROFILE_STORE_GET {
+  property: IProfileProperty;
   fallback?: string;
+}
+
+export interface CONFIG_STORE_SET {
+  property: IConfigProperty;
+  value: string;
+}
+
+export interface CONFIG_STORE_GET {
+  property: IConfigProperty;
+  fallback?: string;
+}
+
+// Global declaration
+declare global {
+  interface Window {
+    configApi: IConfigAPI;
+    profileApi: IProfileAPI;
+  }
 }

@@ -1,7 +1,14 @@
 import { app, BrowserWindow, ipcMain, shell } from "electron";
 import { release } from "os";
 import { join } from "path";
-import { get, set, STORE_GET, STORE_SET } from "../config";
+import {
+  configStoreGet,
+  configStoreSet,
+  profileStoreGet,
+  profileStoreSet,
+  STORE_GET,
+  STORE_SET,
+} from "../stores";
 
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith("6.1")) app.disableHardwareAcceleration();
@@ -15,11 +22,19 @@ if (!app.requestSingleInstanceLock()) {
 }
 
 ipcMain.handle("config:get", async (e, message: STORE_GET) => {
-  return get(message);
+  return configStoreGet(message);
 });
 
 ipcMain.handle("config:set", async (e, message: STORE_SET) => {
-  return set(message);
+  return configStoreSet(message);
+});
+
+ipcMain.handle("profile:get", async (e, message: STORE_GET) => {
+  return profileStoreGet(message);
+});
+
+ipcMain.handle("profile:set", async (e, message: STORE_SET) => {
+  return profileStoreSet(message);
 });
 
 process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
@@ -106,5 +121,3 @@ ipcMain.handle("open-win", (event, arg) => {
     // childWindow.webContents.openDevTools({ mode: "undocked", activate: true })
   }
 });
-
-console.log(app.getPath("userData"));

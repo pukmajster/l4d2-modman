@@ -1,16 +1,16 @@
-import { IConfigProperty } from "@/renderer";
+import { IProfileProperty } from "@/renderer";
 import { useEffect } from "react";
 import { RecoilState, useRecoilState } from "recoil";
 
-export default function useConfigProperty(
-  property: IConfigProperty,
+export default function useProfileProperty(
+  property: IProfileProperty,
   atom: RecoilState<string>
 ) {
   const state = useRecoilState(atom);
   const [rValue, setRValue] = state;
 
   useEffect(() => {
-    window.configApi.set({
+    window.profileApi.set({
       property,
       value: rValue,
     });

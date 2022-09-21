@@ -1,12 +1,15 @@
 import { contextBridge, ipcRenderer } from "electron";
-import { STORE_GET, STORE_SET } from "../config";
+import { STORE_GET, STORE_SET } from "../stores";
 
 contextBridge.exposeInMainWorld("configApi", {
   get: async (data: STORE_GET) => ipcRenderer.invoke("config:get", data),
   set: async (data: STORE_SET) => ipcRenderer.invoke("config:set", data),
 });
 
-alert("config exposed");
+contextBridge.exposeInMainWorld("profileApi", {
+  get: async (data: STORE_GET) => ipcRenderer.invoke("profile:get", data),
+  set: async (data: STORE_SET) => ipcRenderer.invoke("profile:set", data),
+});
 
 function domReady(
   condition: DocumentReadyState[] = ["complete", "interactive"]

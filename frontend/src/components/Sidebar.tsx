@@ -20,7 +20,6 @@ import {
 } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useRecoilState } from "recoil";
-import SettingsDialog from "./SettingsDialog";
 
 export default function Sidebar() {
   const [survivorFilter, setSurvivorFilter] =
@@ -72,7 +71,7 @@ export default function Sidebar() {
             value={gunFilter}
             onChange={(e) => setGunFilter(e.target.value)}
           >
-            <MenuItem value="">-</MenuItem>
+            <MenuItem value="">- NONE -</MenuItem>
             {categories.guns.map((entry) => (
               <MenuItem key={entry} value={entry}>
                 {entry}
@@ -86,7 +85,7 @@ export default function Sidebar() {
             value={meleeFilter}
             onChange={(e) => setMeleeFilter(e.target.value)}
           >
-            <MenuItem value="">-</MenuItem>
+            <MenuItem value="">- NONE -</MenuItem>
             {categories.melee.map((entry) => (
               <MenuItem key={entry} value={entry}>
                 {entry}
@@ -100,7 +99,7 @@ export default function Sidebar() {
             value={grenadeFilter}
             onChange={(e) => setGrenadeFilter(e.target.value)}
           >
-            <MenuItem value="">-</MenuItem>
+            <MenuItem value="">- NONE -</MenuItem>
             {categories.grenades.map((entry) => (
               <MenuItem key={entry} value={entry}>
                 {entry}
@@ -114,7 +113,7 @@ export default function Sidebar() {
             value={survivorFilter}
             onChange={(e) => setSurvivorFilter(e.target.value)}
           >
-            <MenuItem value="">-</MenuItem>
+            <MenuItem value="">- NONE -</MenuItem>
             {categories.survivors.map((entry) => (
               <MenuItem key={entry} value={entry}>
                 {entry}
@@ -128,7 +127,7 @@ export default function Sidebar() {
             value={infectedFilter}
             onChange={(e) => setInfectedFilter(e.target.value)}
           >
-            <MenuItem value="">-</MenuItem>
+            <MenuItem value="">- NONE -</MenuItem>
             {categories.infected.map((entry) => (
               <MenuItem key={entry} value={entry}>
                 {entry}
@@ -142,7 +141,7 @@ export default function Sidebar() {
             value={utilsFilter}
             onChange={(e) => setUtilsFilter(e.target.value)}
           >
-            <MenuItem value="">-</MenuItem>
+            <MenuItem value="">- NONE -</MenuItem>
             {categories.utils.map((entry) => (
               <MenuItem key={entry} value={entry}>
                 {entry}
@@ -151,8 +150,6 @@ export default function Sidebar() {
           </TextField>
 
           <Button onClick={clearFilters}>Clear all filters</Button>
-
-          <SettingsDialog />
         </Stack>
 
         <div>
