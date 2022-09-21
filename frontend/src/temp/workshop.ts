@@ -1,4 +1,10 @@
-export const cache: any = {
+import { Mod } from "@/constants/interfaces";
+
+export interface Cache {
+  [key: string]: Mod;
+}
+
+export const cache: Cache = {
   "2822695737": {
     id: "2822695737",
     addontitle: "EFT Custom AR-15",
