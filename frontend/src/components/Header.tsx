@@ -6,6 +6,7 @@ import { useRecoilState } from "recoil";
 import useProfileProperty from "@/hooks/useProfileProperty";
 import { profileSelectedPresetIdAtom } from "@/state/profile";
 import CachedIcon from "@mui/icons-material/Cached";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
 import FolderIcon from "@mui/icons-material/Folder";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SettingsDialog from "./SettingsDialog";
@@ -30,7 +31,7 @@ export default function Header() {
               Settings
             </Button>
             <Button startIcon={<CachedIcon />}>build cache</Button>
-            <Button startIcon={<CachedIcon />}>refresh cache</Button>
+            <Button startIcon={<FileUploadIcon />}>Use these mods</Button>
           </Stack>
 
           <Button startIcon={<FolderIcon />}>preset: {preset}</Button>
