@@ -1,4 +1,5 @@
 import { Mod } from "@/constants/interfaces";
+import useSelectedPreset from "@/hooks/useSelectedPreset";
 import {
   filterGrenadeAtom,
   filterGunAtom,
@@ -10,7 +11,7 @@ import {
   searchTermAtom,
 } from "@/state/library";
 import { cache } from "@/temp/workshop";
-import { Box, Stack } from "@mui/material";
+import { Box, CircularProgress, Stack } from "@mui/material";
 import { useRecoilState } from "recoil";
 import ModCard from "./ModCard";
 
@@ -25,6 +26,17 @@ export default function ModLibrary() {
   const [miscFilter, setMiscFilter] = useRecoilState(filterUtilsAtom);
   const [utilsFilter, setUtisFilter] = useRecoilState(filterMiscAtom);
   const [searchTerm, setSearchTerm] = useRecoilState(searchTermAtom);
+
+  const [preset, setPreset] = useSelectedPreset();
+
+  if (!preset)
+    return (
+      <>
+        <Stack alignContent={"center"} height="100%" alignItems={"center"}>
+          <CircularProgress />
+        </Stack>
+      </>
+    );
 
   return (
     <Box p={2} height="100%" overflow="scroll">
@@ -67,7 +79,14 @@ export default function ModLibrary() {
             if (matchingFilters == 0) return;
           }
 
-          return <ModCard {...cache[keyName]} />;
+          return (
+            <ModCard
+              {...cache[keyName]}
+              key={thisMod.id}
+              preset={preset}
+              setPreset={setPreset}
+            />
+          );
         })}
       </Stack>
 

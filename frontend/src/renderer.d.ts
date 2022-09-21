@@ -1,35 +1,35 @@
 export interface IConfigAPI {
-  get: (data: CONFIG_STORE_GET) => string;
+  get: (data: CONFIG_STORE_GET) => any;
   set: (data: CONFIG_STORE_SET) => void;
 }
 
 export interface IProfileAPI {
-  get: (data: PROFILE_STORE_GET) => string;
+  get: (data: PROFILE_STORE_GET) => any;
   set: (data: PROFILE_STORE_SET) => void;
 }
 
 // Properties
 type IConfigProperty = "gameDir";
-type IProfileProperty = "selectedPreset" | "presets";
+type IProfileProperty = "selectedPreset" | "presets" | `presets.${string}`;
 
 export interface PROFILE_STORE_SET {
   property: IProfileProperty;
-  value: string;
+  value: any;
 }
 
 export interface PROFILE_STORE_GET {
   property: IProfileProperty;
-  fallback?: string;
+  fallback?: any;
 }
 
 export interface CONFIG_STORE_SET {
   property: IConfigProperty;
-  value: string;
+  value: any;
 }
 
 export interface CONFIG_STORE_GET {
   property: IConfigProperty;
-  fallback?: string;
+  fallback?: any;
 }
 
 // Global declaration

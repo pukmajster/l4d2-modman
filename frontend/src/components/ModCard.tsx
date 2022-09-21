@@ -1,13 +1,25 @@
 import { Mod } from "@/constants/interfaces";
+import { Preset } from "@/state/profile";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import OpenInBrowserIcon from "@mui/icons-material/OpenInBrowser";
-import { Box, Button, Chip, Collapse, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Checkbox,
+  Chip,
+  Collapse,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
 
-interface ModEntryProps extends Mod {}
+interface ModEntryProps extends Mod {
+  preset: Preset;
+  setPreset: (preset: Preset) => void;
+}
 
-export default function ModCard(props: Mod) {
+export default function ModCard(props: ModEntryProps) {
   const [enabled, setEnabled] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
@@ -25,6 +37,32 @@ export default function ModCard(props: Mod) {
       `https://steamcommunity.com/sharedfiles/filedetails/?id=${steamid}`,
       "_blank"
     );
+  }
+
+  // -----------------------------------------
+
+  const isEnabled = props.preset?.enabledMods?.includes(props.id) ?? false;
+
+  function toggleModEnable() {
+    const tempPreset = JSON.parse(JSON.stringify(props.preset));
+
+    if (!Object.hasOwn(tempPreset, "enabledMods")) {
+      tempPreset.enabledMods = [];
+    }
+
+    if (tempPreset.enabledMods.includes(props.id)) {
+      console.log("DISABLED MOD");
+      tempPreset.enabledMods = tempPreset.enabledMods.filter(
+        (test: string) => test != props.id
+      );
+    } else {
+      console.log("ENABLING MOD");
+      tempPreset.enabledMods.push(props.id);
+    }
+
+    console.log(tempPreset.enabledMods);
+
+    props.setPreset(tempPreset);
   }
 
   return (
@@ -57,9 +95,9 @@ export default function ModCard(props: Mod) {
           <img
             style={{ aspectRatio: "4/3", height: "100%", width: "100%" }}
             //src={`file:///home/kry/.local/share/Steam/steamapps/common/Left 4 Dead 2/left4dead2/addons/workshop/${props.id}.jpg`}
-            src="https://steamuserimages-a.akamaihd.net/ugc/1821165190736623795/D89770A30E46A1DEADC0D182C7B29752ED4A6CC9/?imw=268&imh=268&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true"
+            src="https://images.gamebanana.com/img/ico/sprays/588400de9d258.png"
           ></img>
-
+          //
           <ModThumbnailOverlay enabled={enabled} />
         </Box>
 
@@ -103,9 +141,13 @@ export default function ModCard(props: Mod) {
             </Stack>
           </Stack>
 
-          {/*  <Box>
-            
-          </Box> */}
+          <Stack>
+            <Checkbox
+              onClick={() => toggleModEnable()}
+              checked={isEnabled}
+              color={isEnabled ? "primary" : "default"}
+            ></Checkbox>
+          </Stack>
         </Box>
       </Box>
 
@@ -142,7 +184,6 @@ const ModThumbnailOverlay = ({ enabled }: ModThumbnailOverlay) => {
       top={0}
       bottom={0}
       width="100%"
-      style={{ aspectRatio: "4/3" }}
       bgcolor={enabled ? "rgba(0,255,0,0.05)" : "rgba(255,0,0,0.05)"}
       display="flex"
       justifyContent={"center"}

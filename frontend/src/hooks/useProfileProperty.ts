@@ -4,17 +4,16 @@ import { RecoilState, useRecoilState } from "recoil";
 
 export default function useProfileProperty(
   property: IProfileProperty,
-  atom: RecoilState<string>
+  atom: RecoilState<any>
 ) {
   const state = useRecoilState(atom);
-  const [rValue, setRValue] = state;
 
   useEffect(() => {
     window.profileApi.set({
       property,
-      value: rValue,
+      value: state[0],
     });
-  }, [rValue]);
+  }, [state[0]]);
 
   return state;
 }

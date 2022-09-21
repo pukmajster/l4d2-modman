@@ -4,7 +4,7 @@ import { Stack } from "@mui/system";
 import { useRecoilState } from "recoil";
 
 import useProfileProperty from "@/hooks/useProfileProperty";
-import { profileSelectedPresetAtom } from "@/state/profile";
+import { profileSelectedPresetIdAtom } from "@/state/profile";
 import CachedIcon from "@mui/icons-material/Cached";
 import FolderIcon from "@mui/icons-material/Folder";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -14,7 +14,7 @@ export default function Header() {
   const [, setOpen] = useRecoilState(showModmanConfigDialogAtom);
   const [preset, setPreset] = useProfileProperty(
     "selectedPreset",
-    profileSelectedPresetAtom
+    profileSelectedPresetIdAtom
   );
 
   function openSettingsDialog() {

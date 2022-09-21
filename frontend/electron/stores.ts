@@ -1,11 +1,11 @@
 export interface STORE_SET {
   property: string;
-  value: string;
+  value: any;
 }
 
 export interface STORE_GET {
   property: string;
-  fallback?: string;
+  fallback?: any;
 }
 
 const Store = require("electron-store");
@@ -45,9 +45,10 @@ const profileStore = new Store({
 export function profileStoreGet({ property, fallback }: STORE_GET) {
   let value = profileStore.get(property);
 
-  if (!value && fallback) {
-    profileStoreSet({ property, value: fallback });
-    value = profileStore.get(property);
+  if (value == null && fallback) {
+    // profileStoreSet({ property, value: fallback });
+    //value = profileStore.get(property);
+    return fallback;
   }
 
   return value;
