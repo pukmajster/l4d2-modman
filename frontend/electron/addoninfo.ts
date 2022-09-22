@@ -5,7 +5,7 @@ export function writeAddonInfo(gameDir: string, addons: string) {
   console.log("DOING SOMETHNIG");
 
   try {
-    fs.writeFile(path.join(gameDir, "addoninfo.txt"), addons, function (err) {
+    fs.writeFile(path.join(gameDir, "addonlist.txt"), addons, function (err) {
       if (err) {
         return console.log(err);
       }

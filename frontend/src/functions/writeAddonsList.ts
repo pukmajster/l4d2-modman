@@ -6,12 +6,12 @@ export async function writeAddons(
   preset: Preset,
   gameDir: string
 ) {
-  let outputVdfString = `"Addons"\n{\n`;
+  let outputVdfString = `"AddonList"\n{\n`;
 
   for (let mod in cache) {
     let modId = cache[mod].id;
     let enabled = preset.enabledMods.includes(modId) ? "1" : "0";
-    outputVdfString += `\t"workshop/${modId}"\t\t\t"${enabled}"\n`;
+    outputVdfString += `\t"workshop/${modId}.vpk"\t\t\t"${enabled}"\n`;
   }
 
   outputVdfString += "}";
