@@ -31,11 +31,15 @@ export default function Header() {
             <Button onClick={openSettingsDialog} startIcon={<SettingsIcon />}>
               Settings
             </Button>
-            <Button startIcon={<CachedIcon />}>build cache</Button>
+            <Button disabled startIcon={<CachedIcon />}>
+              build cache
+            </Button>
             <Writer />
           </Stack>
 
-          <Button startIcon={<FolderIcon />}>preset: {preset}</Button>
+          <Button disabled startIcon={<FolderIcon />}>
+            preset: {preset}
+          </Button>
         </Stack>
       </Box>
 
