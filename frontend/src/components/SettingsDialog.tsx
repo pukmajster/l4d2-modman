@@ -33,6 +33,7 @@ export default function SettingsDialog() {
       <DialogContent>
         <Stack>
           <TextField
+            disabled
             label="Game directory"
             value={gameDir}
             onChange={(e) => setGameDir(e.target.value)}
