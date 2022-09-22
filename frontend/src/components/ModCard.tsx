@@ -3,15 +3,7 @@ import { Preset } from "@/state/profile";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import OpenInBrowserIcon from "@mui/icons-material/OpenInBrowser";
-import {
-  Box,
-  Button,
-  Checkbox,
-  Chip,
-  Collapse,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Chip, Collapse, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 
 interface ModEntryProps extends Mod {
@@ -72,13 +64,13 @@ export default function ModCard(props: ModEntryProps) {
         textAlign={"left"}
         display={"grid"}
         flexDirection="column"
-        gridTemplateColumns={"minmax(196px, 20%) auto"}
+        gridTemplateColumns={"minmax(196px, 14%) auto"}
         key={props.id}
         bgcolor={"rgba(52,52,52,0.3)"}
         borderRadius={1}
         overflow="hidden"
         sx={{
-          gridTemplateColumns: { xs: "1fr", md: "minmax(196px, 15%) auto" },
+          gridTemplateColumns: { xs: "1fr", md: "minmax(148px, 15%) auto" },
           transition: "background-color 0.14s ease",
           "&:hover": {
             bgcolor: "rgba(52,52,52,0.5)",
@@ -97,8 +89,33 @@ export default function ModCard(props: ModEntryProps) {
             //src={`file:///home/kry/.local/share/Steam/steamapps/common/Left 4 Dead 2/left4dead2/addons/workshop/${props.id}.jpg`}
             src="https://images.gamebanana.com/img/ico/sprays/588400de9d258.png"
           ></img>
-          //
-          <ModThumbnailOverlay enabled={enabled} />
+
+          <Box
+            component={"button"}
+            position={"absolute"}
+            top={0}
+            bottom={0}
+            width="100%"
+            bgcolor={enabled ? "rgba(0,255,0,0.05)" : "rgba(255,0,0,0.05)"}
+            display="flex"
+            justifyContent={"center"}
+            alignItems={"center"}
+            onClick={() => toggleModEnable()}
+            border="none"
+            boxShadow="none"
+            sx={{ cursor: "pointer" }}
+          >
+            <Box
+              p={0.5}
+              display={"flex"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              borderRadius="50%"
+              bgcolor={enabled ? "rgba(0,255,0,0.15)" : "rgba(255,0,0,0.15)"}
+            >
+              {enabled ? <CheckIcon /> : <CloseIcon />}
+            </Box>
+          </Box>
         </Box>
 
         <Box
@@ -107,6 +124,7 @@ export default function ModCard(props: ModEntryProps) {
           display={"flex"}
           justifyContent="space-between"
           p={1.5}
+          pb={1}
         >
           <Stack justifyContent={"space-between"}>
             <Stack>
@@ -124,7 +142,7 @@ export default function ModCard(props: ModEntryProps) {
                 ))}
               </Box>
             </Stack>
-            <Stack mt={1} direction="row">
+            <Stack mt={1} direction="row" spacing={1}>
               <Button
                 onClick={() => openModInBrowser(props.id)}
                 startIcon={<OpenInBrowserIcon />}
@@ -141,13 +159,13 @@ export default function ModCard(props: ModEntryProps) {
             </Stack>
           </Stack>
 
-          <Stack>
+          {/* <Stack>
             <Checkbox
               onClick={() => toggleModEnable()}
               checked={isEnabled}
               color={isEnabled ? "primary" : "default"}
             ></Checkbox>
-          </Stack>
+          </Stack> */}
         </Box>
       </Box>
 
@@ -172,33 +190,3 @@ export default function ModCard(props: ModEntryProps) {
     </Stack>
   );
 }
-
-interface ModThumbnailOverlay {
-  enabled: boolean;
-}
-
-const ModThumbnailOverlay = ({ enabled }: ModThumbnailOverlay) => {
-  return (
-    <Box
-      position={"absolute"}
-      top={0}
-      bottom={0}
-      width="100%"
-      bgcolor={enabled ? "rgba(0,255,0,0.05)" : "rgba(255,0,0,0.05)"}
-      display="flex"
-      justifyContent={"center"}
-      alignItems={"center"}
-    >
-      <Box
-        p={0.5}
-        display={"flex"}
-        justifyContent={"center"}
-        alignItems={"center"}
-        borderRadius="50%"
-        bgcolor={enabled ? "rgba(0,255,0,0.15)" : "rgba(255,0,0,0.15)"}
-      >
-        {enabled ? <CheckIcon /> : <CloseIcon />}
-      </Box>
-    </Box>
-  );
-};
