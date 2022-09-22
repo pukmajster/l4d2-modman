@@ -20,6 +20,11 @@ contextBridge.exposeInMainWorld("addonInfoApi", {
     ipcRenderer.invoke("addoninfo:write", gameDir, addons),
 });
 
+contextBridge.exposeInMainWorld("cacheApi", {
+  requestCache: (forceNewBuild: boolean = false) =>
+    ipcRenderer.invoke("cache:request", forceNewBuild),
+});
+
 function domReady(
   condition: DocumentReadyState[] = ["complete", "interactive"]
 ) {

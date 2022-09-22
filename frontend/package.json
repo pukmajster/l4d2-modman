@@ -20,7 +20,9 @@
     "@mui/icons-material": "^5.10.3",
     "@mui/material": "^5.10.5",
     "electron-store": "^8.1.0",
-    "recoil": "^0.7.5"
+    "node-vdf": "^0.0.3",
+    "recoil": "^0.7.5",
+    "vpk": "^0.2.0"
   },
   "devDependencies": {
     "@types/electron-store": "^3.2.0",

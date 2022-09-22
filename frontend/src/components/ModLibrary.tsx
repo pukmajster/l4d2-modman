@@ -1,5 +1,6 @@
 import { Mod } from "@/constants/interfaces";
 import useSelectedPreset from "@/hooks/useSelectedPreset";
+import { cacheAtom } from "@/state/cache";
 import {
   filterGrenadeAtom,
   filterGunAtom,
@@ -11,7 +12,6 @@ import {
   searchTermAtom,
   selectedModIdsAtom,
 } from "@/state/library";
-import { cache } from "@/temp/workshop";
 import {
   Box,
   Checkbox,
@@ -34,10 +34,11 @@ export default function ModLibrary() {
   const [utilsFilter, setUtisFilter] = useRecoilState(filterMiscAtom);
   const [searchTerm, setSearchTerm] = useRecoilState(searchTermAtom);
 
+  const [cache] = useRecoilState(cacheAtom);
   const [preset, setPreset] = useSelectedPreset();
   const [selectedMods, setSelectedMods] = useRecoilState(selectedModIdsAtom);
 
-  if (!preset)
+  if (!preset || !cache)
     return (
       <>
         <Stack alignContent={"center"} height="100%" alignItems={"center"}>

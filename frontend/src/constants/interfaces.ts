@@ -25,3 +25,7 @@ export interface Mod {
   error?: string;
   categories?: string[];
 }
+
+export interface ModCache {
+  [key: string]: Mod;
+}

@@ -1,8 +1,4 @@
-import { Mod } from "@/constants/interfaces";
-
-export interface Cache {
-  [key: string]: Mod;
-}
+import { Cache } from "@/constants/interfaces";
 
 export const cache: Cache = {
   "2822695737": {

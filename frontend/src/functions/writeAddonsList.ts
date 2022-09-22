@@ -1,8 +1,8 @@
+import { ModCache } from "@/constants/interfaces";
 import { Preset } from "@/state/profile";
-import { Cache } from "@/temp/workshop";
 
 export async function writeAddons(
-  cache: Cache,
+  cache: ModCache,
   preset: Preset,
   gameDir: string
 ) {
@@ -15,10 +15,6 @@ export async function writeAddons(
   }
 
   outputVdfString += "}";
-  // console.log(outputVdfString);
-
   let res = await window.addonInfoApi.writeAddonInfo(gameDir, outputVdfString);
-  console.log(res);
-
   return res;
 }

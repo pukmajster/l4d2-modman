@@ -53,12 +53,10 @@ export default function ModCard(props: ModEntryProps) {
     }
 
     if (tempPreset.enabledMods.includes(props.id)) {
-      console.log("DISABLED MOD");
       tempPreset.enabledMods = tempPreset.enabledMods.filter(
         (test: string) => test != props.id
       );
     } else {
-      console.log("ENABLING MOD");
       tempPreset.enabledMods.push(props.id);
     }
 

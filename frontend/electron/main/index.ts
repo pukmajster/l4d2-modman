@@ -2,6 +2,7 @@ import { app, BrowserWindow, dialog, ipcMain, shell } from "electron";
 import { release } from "os";
 import { join } from "path";
 import { writeAddonInfo } from "../addoninfo";
+import { requestCache } from "../cache";
 import {
   configStoreGet,
   configStoreSet,
@@ -21,6 +22,10 @@ if (!app.requestSingleInstanceLock()) {
   app.quit();
   process.exit(0);
 }
+
+// ---------------------------------------------------
+// ModMan handles
+// ---------------------------------------------------
 
 ipcMain.handle("config:get", async (e, message: STORE_GET) => {
   return configStoreGet(message);
@@ -45,6 +50,14 @@ ipcMain.handle(
   }
 );
 
+ipcMain.handle("cache:request", async (e, forceNewBuild: boolean = false) => {
+  return requestCache(forceNewBuild);
+});
+
+// ---------------------------------------------------
+// Preload
+// ---------------------------------------------------
+
 process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
 process.env.DIST = join(__dirname, "../..");
 process.env.PUBLIC = app.isPackaged
@@ -56,7 +69,6 @@ let win: BrowserWindow | null = null;
 const preload = join(__dirname, "../preload/index.js");
 const url = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = join(process.env.DIST, "index.html");
-console.log("preload", preload);
 
 async function createWindow() {
   win = new BrowserWindow({
@@ -66,11 +78,12 @@ async function createWindow() {
     icon: join(process.env.PUBLIC, "favicon.svg"),
     webPreferences: {
       preload,
-      nodeIntegration: true,
-      contextIsolation: true,
+      nodeIntegration: true, // keep     two    !
+      contextIsolation: true, //     these   true
     },
   });
 
+  // Handle for directory dialog
   ipcMain.handle("dialog:openDirectory", async () => {
     const { canceled, filePaths } = await dialog.showOpenDialog(win, {
       properties: ["openDirectory"],
@@ -78,7 +91,6 @@ async function createWindow() {
     if (canceled) {
       return;
     } else {
-      console.log(filePaths[0]);
       return filePaths[0];
     }
   });

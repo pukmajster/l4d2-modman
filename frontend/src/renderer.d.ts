@@ -1,3 +1,5 @@
+import { Cache } from "./temp/workshop";
+
 export interface IConfigAPI {
   get: (data: CONFIG_STORE_GET) => any;
   set: (data: CONFIG_STORE_SET) => void;
@@ -14,6 +16,10 @@ export interface IDialogAPI {
 
 export interface IAddonInfoAPI {
   writeAddonInfo: (gameDir: string, contents: string) => string?;
+}
+
+export interface ICacheAPI {
+  requestCache: (forceNewBuild: boolean = false) => Cache;
 }
 
 // Properties
@@ -47,5 +53,6 @@ declare global {
     profileApi: IProfileAPI;
     dialogApi: IDialogAPI;
     addonInfoApi: IAddonInfoAPI;
+    cacheApi: ICacheAPI;
   }
 }

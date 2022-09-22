@@ -7,12 +7,17 @@ import useProfileProperty from "@/hooks/useProfileProperty";
 import { profileSelectedPresetIdAtom } from "@/state/profile";
 import CachedIcon from "@mui/icons-material/Cached";
 
+import { ModCache } from "@/constants/interfaces";
+import { requestCache } from "@/functions/requestCache";
+import { cacheAtom } from "@/state/cache";
 import FolderIcon from "@mui/icons-material/Folder";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { useEffect } from "react";
 import SettingsDialog from "./SettingsDialog";
 import Writer from "./Writer";
 
 export default function Header() {
+  const [cache, setCache] = useRecoilState(cacheAtom);
   const [, setOpen] = useRecoilState(showModmanConfigDialogAtom);
   const [preset, setPreset] = useProfileProperty(
     "selectedPreset",
@@ -23,6 +28,15 @@ export default function Header() {
     setOpen(true);
   }
 
+  function updateCacheOnRequest() {
+    requestCache(true, (c: ModCache) => setCache(c));
+  }
+
+  // Request cache on startup
+  useEffect(() => {
+    requestCache(false, (c: ModCache) => setCache(c));
+  }, []);
+
   return (
     <>
       <Box p={1} borderBottom="1px solid #323232">
@@ -31,7 +45,7 @@ export default function Header() {
             <Button onClick={openSettingsDialog} startIcon={<SettingsIcon />}>
               Settings
             </Button>
-            <Button disabled startIcon={<CachedIcon />}>
+            <Button onClick={updateCacheOnRequest} startIcon={<CachedIcon />}>
               Refresh
             </Button>
             <Writer />

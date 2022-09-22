@@ -29,8 +29,6 @@ export default function useSelectedPreset() {
 
     setPresetState(newPreset);
 
-    console.log("Loaded preset", newPreset);
-
     setInitialLoadDone(true);
   }
 
@@ -44,8 +42,6 @@ export default function useSelectedPreset() {
         property: `presets.${selectedPresetId}`,
         value: getPresetState,
       });
-
-      console.log("writing preset");
     }
   }, [getPresetState]);
 
