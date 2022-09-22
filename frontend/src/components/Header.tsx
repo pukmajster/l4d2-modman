@@ -1,41 +1,58 @@
 import { showModmanConfigDialogAtom } from "@/state/dialogs";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useRecoilState } from "recoil";
 
 import useProfileProperty from "@/hooks/useProfileProperty";
-import { profileSelectedPresetIdAtom } from "@/state/profile";
+import {
+  profileSelectedPresetAtom,
+  profileSelectedPresetIdAtom,
+} from "@/state/profile";
 import CachedIcon from "@mui/icons-material/Cached";
 
-import { ModCache } from "@/constants/interfaces";
 import { requestCache } from "@/functions/requestCache";
 import { cacheAtom } from "@/state/cache";
 import FolderIcon from "@mui/icons-material/Folder";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import SettingsDialog from "./SettingsDialog";
 import Writer from "./Writer";
 
 export default function Header() {
   const [cache, setCache] = useRecoilState(cacheAtom);
   const [, setOpen] = useRecoilState(showModmanConfigDialogAtom);
-  const [preset, setPreset] = useProfileProperty(
+  const [presetName] = useProfileProperty(
     "selectedPreset",
     profileSelectedPresetIdAtom
   );
+  const [preset] = useRecoilState(profileSelectedPresetAtom);
+
+  const [requestingCache, setRequestingCache] = useState(false);
 
   function openSettingsDialog() {
     setOpen(true);
   }
 
-  function updateCacheOnRequest() {
-    requestCache(true, (c: ModCache) => setCache(c));
+  async function updateCacheOnRequest() {
+    baseCacheRequest(true);
   }
 
   // Request cache on startup
   useEffect(() => {
-    requestCache(false, (c: ModCache) => setCache(c));
+    baseCacheRequest(false);
   }, []);
+
+  async function baseCacheRequest(forceNewBuild: boolean) {
+    try {
+      setRequestingCache(true);
+      let newCache = await requestCache(forceNewBuild);
+      setCache(newCache);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setRequestingCache(false);
+    }
+  }
 
   return (
     <>
@@ -45,14 +62,28 @@ export default function Header() {
             <Button onClick={openSettingsDialog} startIcon={<SettingsIcon />}>
               Settings
             </Button>
-            <Button onClick={updateCacheOnRequest} startIcon={<CachedIcon />}>
-              Refresh
+            <Button
+              disabled={requestingCache}
+              onClick={updateCacheOnRequest}
+              startIcon={<CachedIcon />}
+            >
+              {requestingCache ? "working..." : "refresh"}
             </Button>
             <Writer />
+
+            <Stack>
+              <Typography variant="caption">
+                Installed mods: {Object.keys(cache)?.length}
+              </Typography>
+
+              <Typography variant="caption">
+                Enabled mods: {preset?.enabledMods?.length}
+              </Typography>
+            </Stack>
           </Stack>
 
           <Button disabled startIcon={<FolderIcon />}>
-            preset: {preset}
+            preset: {presetName}
           </Button>
         </Stack>
       </Box>
