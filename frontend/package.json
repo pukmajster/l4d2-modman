@@ -3,8 +3,8 @@
   "productName": "L4D2 ModMan",
   "private": true,
   "version": "2.0.0",
-  "description": "L4d2 mod manager",
-  "author": "草鞋没号 <308487730@qq.com>",
+  "description": "L4D2 mod manager",
+  "author": "Žan Pukmajster https://github.com/pukmajster",
   "license": "MIT",
   "main": "dist/electron/main/index.js",
   "scripts": {
