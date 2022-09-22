@@ -22,16 +22,11 @@ interface ModEntryProps extends Mod {
 }
 
 export default function ModCard(props: ModEntryProps) {
-  const [enabled, setEnabled] = useState(false);
   const [expanded, setExpanded] = useState(false);
-
+  const isEnabled = props.preset?.enabledMods?.includes(props.id) ?? false;
   const isCorrupt = props?.error;
 
-  function handleModEnabled() {
-    setEnabled((old) => !old);
-  }
-
-  const bgcolor = enabled ? "rgba(0,255,0,0.05)" : "rgba(255,0,0,0.05)";
+  const bgcolor = isEnabled ? "rgba(0,255,0,0.05)" : "rgba(255,0,0,0.05)";
   const corruptcolor = isCorrupt ? "rgba(14,14,14.22)" : "transparent";
 
   function openModInBrowser(steamid: string) {
@@ -42,8 +37,6 @@ export default function ModCard(props: ModEntryProps) {
   }
 
   // -----------------------------------------
-
-  const isEnabled = props.preset?.enabledMods?.includes(props.id) ?? false;
 
   function toggleModEnable() {
     const tempPreset = JSON.parse(JSON.stringify(props.preset));
@@ -108,7 +101,6 @@ export default function ModCard(props: ModEntryProps) {
           <Box
             width="100%"
             //style={{ aspectRatio: "4/3" }}
-            onClick={() => handleModEnabled()}
             position={"relative"}
             // borderLeft={`4px solid ${enabled ? "rgb(0,255,0)" : "rgb(255,0,0)"}`}
           >
@@ -125,7 +117,7 @@ export default function ModCard(props: ModEntryProps) {
               bottom={0}
               right={0}
               width="100%"
-              bgcolor={enabled ? "rgba(0,255,0,0.03)" : "rgba(255,0,0,0.03)"}
+              bgcolor={isEnabled ? "rgba(0,255,0,0.03)" : "rgba(255,0,0,0.03)"}
               display="flex"
               p="5px"
               justifyContent={"end"}
@@ -141,9 +133,11 @@ export default function ModCard(props: ModEntryProps) {
                 justifyContent={"center"}
                 alignItems={"center"}
                 borderRadius="50%"
-                bgcolor={enabled ? "rgba(0,255,0,0.35)" : "rgba(255,0,0,0.35)"}
+                bgcolor={
+                  isEnabled ? "rgba(0,255,0,0.35)" : "rgba(255,0,0,0.35)"
+                }
               >
-                {enabled ? <CheckIcon /> : <CloseIcon />}
+                {isEnabled ? <CheckIcon /> : <CloseIcon />}
               </Box>
             </Box>
           </Box>
