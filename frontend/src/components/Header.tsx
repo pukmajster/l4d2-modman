@@ -32,7 +32,7 @@ export default function Header() {
               Settings
             </Button>
             <Button disabled startIcon={<CachedIcon />}>
-              build cache
+              Refresh
             </Button>
             <Writer />
           </Stack>

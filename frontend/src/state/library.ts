@@ -41,3 +41,8 @@ export const filterUtilsAtom = atom({
   key: "filterUtilsAtom",
   default: "" as string,
 });
+
+export const selectedModIdsAtom = atom({
+  key: "selectedModIdsAtom",
+  default: [] as string[],
+});
