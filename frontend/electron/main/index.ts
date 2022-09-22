@@ -1,6 +1,7 @@
-import { app, BrowserWindow, ipcMain, shell } from "electron";
+import { app, BrowserWindow, dialog, ipcMain, shell } from "electron";
 import { release } from "os";
 import { join } from "path";
+import { writeAddonInfo } from "../addoninfo";
 import {
   configStoreGet,
   configStoreSet,
@@ -37,6 +38,13 @@ ipcMain.handle("profile:set", async (e, message: STORE_SET) => {
   return profileStoreSet(message);
 });
 
+ipcMain.handle(
+  "addoninfo:write",
+  async (e, gameDir: string, contents: string) => {
+    return writeAddonInfo(gameDir, contents);
+  }
+);
+
 process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
 process.env.DIST = join(__dirname, "../..");
 process.env.PUBLIC = app.isPackaged
@@ -61,6 +69,18 @@ async function createWindow() {
       nodeIntegration: true,
       contextIsolation: true,
     },
+  });
+
+  ipcMain.handle("dialog:openDirectory", async () => {
+    const { canceled, filePaths } = await dialog.showOpenDialog(win, {
+      properties: ["openDirectory"],
+    });
+    if (canceled) {
+      return;
+    } else {
+      console.log(filePaths[0]);
+      return filePaths[0];
+    }
   });
 
   if (app.isPackaged) {

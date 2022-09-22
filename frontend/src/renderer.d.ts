@@ -8,6 +8,14 @@ export interface IProfileAPI {
   set: (data: PROFILE_STORE_SET) => void;
 }
 
+export interface IDialogAPI {
+  selectFolder: () => string?;
+}
+
+export interface IAddonInfoAPI {
+  writeAddonInfo: (gameDir: string, contents: string) => string?;
+}
+
 // Properties
 type IConfigProperty = "gameDir";
 type IProfileProperty = "selectedPreset" | "presets" | `presets.${string}`;
@@ -37,5 +45,7 @@ declare global {
   interface Window {
     configApi: IConfigAPI;
     profileApi: IProfileAPI;
+    dialogApi: IDialogAPI;
+    addonInfoApi: IAddonInfoAPI;
   }
 }

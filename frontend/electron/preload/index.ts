@@ -11,6 +11,15 @@ contextBridge.exposeInMainWorld("profileApi", {
   set: async (data: STORE_SET) => ipcRenderer.invoke("profile:set", data),
 });
 
+contextBridge.exposeInMainWorld("dialogApi", {
+  selectFolder: () => ipcRenderer.invoke("dialog:openDirectory"),
+});
+
+contextBridge.exposeInMainWorld("addonInfoApi", {
+  writeAddonInfo: (gameDir: string, addons: string) =>
+    ipcRenderer.invoke("addoninfo:write", gameDir, addons),
+});
+
 function domReady(
   condition: DocumentReadyState[] = ["complete", "interactive"]
 ) {

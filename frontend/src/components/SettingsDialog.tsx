@@ -1,6 +1,7 @@
 import useConfigProperty from "@/hooks/useConfigProperty";
 import { gameDirAtom } from "@/state/config";
 import { showModmanConfigDialogAtom } from "@/state/dialogs";
+import FolderIcon from "@mui/icons-material/Folder";
 import {
   Button,
   Dialog,
@@ -20,6 +21,12 @@ export default function SettingsDialog() {
     setOpen(false);
   }
 
+  async function handleNewDirectory() {
+    let dir = await window.dialogApi.selectFolder();
+    if (!dir) return;
+    setGameDir(dir);
+  }
+
   return (
     <Dialog open={open} onClose={handleOnClose} fullWidth>
       <DialogTitle>Settings</DialogTitle>
@@ -30,6 +37,11 @@ export default function SettingsDialog() {
             value={gameDir}
             onChange={(e) => setGameDir(e.target.value)}
           ></TextField>
+          <Stack direction="row" justifyContent={"end"}>
+            <Button startIcon={<FolderIcon />} onClick={handleNewDirectory}>
+              SELECT DIRECTROY
+            </Button>
+          </Stack>
         </Stack>
       </DialogContent>
       <DialogActions>

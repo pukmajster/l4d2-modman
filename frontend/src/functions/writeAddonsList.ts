@@ -1,7 +1,11 @@
 import { Preset } from "@/state/profile";
 import { Cache } from "@/temp/workshop";
 
-export async function writeAddons(cache: Cache, preset: Preset) {
+export async function writeAddons(
+  cache: Cache,
+  preset: Preset,
+  gameDir: string
+) {
   let outputVdfString = `"Addons"\n{\n`;
 
   for (let mod in cache) {
@@ -11,6 +15,10 @@ export async function writeAddons(cache: Cache, preset: Preset) {
   }
 
   outputVdfString += "}";
+  // console.log(outputVdfString);
 
-  console.log(outputVdfString);
+  let res = await window.addonInfoApi.writeAddonInfo(gameDir, outputVdfString);
+  console.log(res);
+
+  return res;
 }

@@ -27,7 +27,7 @@ export default function Header() {
     <>
       <Box p={1} borderBottom="1px solid #323232">
         <Stack direction="row" justifyContent="space-between">
-          <Stack spacing={1} direction="row">
+          <Stack spacing={1} direction="row" alignItems={"center"}>
             <Button onClick={openSettingsDialog} startIcon={<SettingsIcon />}>
               Settings
             </Button>
