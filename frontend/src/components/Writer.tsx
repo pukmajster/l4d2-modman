@@ -19,9 +19,11 @@ export default function Writer() {
   async function write() {
     try {
       setWritingState("Working on it...");
-      await wait(1000);
+      await wait(200);
       await writeAddons(cache, preset, gameDir);
       setWritingState("Done!");
+      await wait(1000);
+      setWritingState("");
     } catch {
       setWritingState("Something went wrong...");
     }
