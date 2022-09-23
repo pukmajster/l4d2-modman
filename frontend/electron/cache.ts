@@ -164,8 +164,9 @@ export async function buildCache() {
   // TODO: Uncomment after finished
   //if (!verifyGameDir(gameDir)) return false;
 
-  const addonsDir = path.join(gameDir, "addons/");
-  console.log("------------reading addons dir----");
+  const addonsDir = path.join(gameDir, "addons/workshop");
+  console.log("------------reading addons dir----------");
+  console.log(addonsDir);
 
   const cache = {};
 
@@ -254,9 +255,14 @@ export async function buildCache() {
 export function requestCache(forceNewBuild: boolean = false) {
   const cacheExists = fs.existsSync(cacheDir);
 
-  if (forceNewBuild || cacheExists) {
+  if (forceNewBuild || !cacheExists) {
     console.log("building new cache");
     return buildCache();
+  }
+
+  if (!cacheExists) {
+    console.log("no cache detected... aborting");
+    return {};
   }
 
   console.log("reading cache");
