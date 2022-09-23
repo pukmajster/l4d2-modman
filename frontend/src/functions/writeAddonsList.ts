@@ -11,7 +11,7 @@ export async function writeAddons(
   for (let mod in cache) {
     let modId = cache[mod].id;
     let enabled = preset.enabledMods.includes(modId) ? "1" : "0";
-    outputVdfString += `\t"workshop/${modId}.vpk"\t\t\t"${enabled}"\n`;
+    outputVdfString += `\t"workshop\\${modId}.vpk"\t\t\t"${enabled}"\n`;
   }
 
   outputVdfString += "}";
