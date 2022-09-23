@@ -84,6 +84,15 @@ async function createWindow() {
     },
   });
 
+  win.webContents.on("will-navigate", function (e, url) {
+    e.preventDefault();
+    console.log("opening in external browser");
+
+    if (process.platform === "linux")
+      require("child_process").exec("xdg-open " + url);
+    else shell.openExternal(url);
+  });
+
   // Handle for directory dialog
   ipcMain.handle("dialog:openDirectory", async () => {
     const { canceled, filePaths } = await dialog.showOpenDialog(win, {
