@@ -161,8 +161,7 @@ function verifyGameDir(gameDir: string) {
 export async function buildCache() {
   const gameDir = configStoreGet({ property: "gameDir", fallback: "" });
   // Verify we have a proper gameDir
-  // TODO: Uncomment after finished
-  //if (!verifyGameDir(gameDir)) return false;
+  if (!verifyGameDir(gameDir)) return {};
 
   const addonsDir = path.join(gameDir, "addons/workshop");
   console.log("------------reading addons dir----------");
@@ -193,30 +192,6 @@ export async function buildCache() {
         const vpk = new VPK(pakPath);
         vpk.load();
 
-        // Read the file buffer and turn it into a string our VDF parser can read
-        let addoninfo = vpk.getFile("addoninfo.txt").toString("utf-8");
-        let addoninfoData = vdf.parse(addoninfo).AddonInfo;
-        let addonId = file.split(".")[0];
-
-        modInfo["id"] = addonId;
-
-        // Take a look at the addoninfo.txt file and see what useful information we can snatch
-        for (let item in addoninfoData) {
-          let key = item.toLocaleLowerCase();
-          let value = addoninfoData[item];
-
-          // If the value of the key is 0 we don't care about it
-          if (value == "0") continue;
-
-          if (acceptedMetaKeys.includes(key)) {
-            // Just copy over certain keys
-            modInfo[key] = value;
-          } else if (addonContentToCategoryMap.hasOwnProperty(key)) {
-            // Map the contentAddon property into a category
-            addCategory(addonContentToCategoryMap[key]);
-          }
-        }
-
         // Get a list of all the files the mod supplies and provide appropriate categories
         //   based on said files
         for (let includedFile of vpk.files) {
@@ -234,6 +209,35 @@ export async function buildCache() {
           }
         }
 
+        let addonId = file.split(".")[0];
+        modInfo["id"] = addonId;
+
+        try {
+          // Read the file buffer and turn it into a string our VDF parser can read
+          let addoninfo = vpk.getFile("addoninfo.txt").toString("utf-8");
+          let addoninfoData = vdf.parse(addoninfo).AddonInfo;
+
+          // Take a look at the addoninfo.txt file and see what useful information we can snatch
+          for (let item in addoninfoData) {
+            let key = item.toLocaleLowerCase();
+            let value = addoninfoData[item];
+
+            // If the value of the key is 0 we don't care about it
+            if (value == "0") continue;
+
+            if (acceptedMetaKeys.includes(key)) {
+              // Just copy over certain keys
+              modInfo[key] = value;
+            } else if (addonContentToCategoryMap.hasOwnProperty(key)) {
+              // Map the contentAddon property into a category
+              addCategory(addonContentToCategoryMap[key]);
+            }
+          }
+        } catch (e) {
+          console.log("error parsing addoninfo for mod " + addonId);
+          modInfo["error"] = "Error parsing addoninfo.txt";
+        }
+
         cache[addonId] = modInfo;
       } catch (e) {
         console.log(e);
@@ -243,7 +247,7 @@ export async function buildCache() {
     console.log("error building cache");
   }
 
-  console.log(cache);
+  //console.log(cache);
   console.log("------------end addon cache ----------------");
 
   // TODO: remove indent for final version?
