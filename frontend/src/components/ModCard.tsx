@@ -13,6 +13,7 @@ interface ModEntryProps extends Mod {
   preset: Preset;
   setPreset: (preset: Preset) => void;
   gameDir: string;
+  isConflicting: boolean;
 }
 
 export default function ModCard(props: ModEntryProps) {
@@ -26,8 +27,6 @@ export default function ModCard(props: ModEntryProps) {
       "_blank"
     );
   }
-
-  console.log(props.gameDir);
 
   // -----------------------------------------
 
@@ -45,8 +44,6 @@ export default function ModCard(props: ModEntryProps) {
     } else {
       tempPreset.enabledMods.push(props.id);
     }
-
-    console.log(tempPreset.enabledMods);
 
     props.setPreset(tempPreset);
   }
@@ -160,7 +157,7 @@ export default function ModCard(props: ModEntryProps) {
               </Stack>
             </Stack>
 
-            <Stack mt={1} direction="row" spacing={1}>
+            <Stack mt={1} direction="row" spacing={1} alignItems="center">
               <Button
                 onClick={() => openModInBrowser(props.id)}
                 startIcon={<OpenInBrowserIcon />}
@@ -174,6 +171,12 @@ export default function ModCard(props: ModEntryProps) {
               >
                 details
               </Button> */}
+
+              {props.isConflicting && (
+                <Typography color="firebrick">
+                  THIS MOD IS CONFLICTING WITH ANOTHER MOD!
+                </Typography>
+              )}
             </Stack>
           </Box>
         </Box>

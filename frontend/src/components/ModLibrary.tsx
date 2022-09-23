@@ -20,14 +20,25 @@ import {
   MenuItem,
   Stack,
   TextField,
+  Typography,
 } from "@mui/material";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
 import ModCard from "./ModCard";
 
 type SortingType = "name_asc" | "name_desc";
+type TypeOfMod = "any" | "enabled" | "disabled" | "conflicting";
 
 export default function ModLibrary() {
+  const [cache] = useRecoilState(cacheAtom);
+  const [preset, setPreset] = useSelectedPreset();
+  const [selectedMods, setSelectedMods] = useRecoilState(selectedModIdsAtom);
+  const [gameDir] = useConfigProperty("gameDir", gameDirAtom);
+
+  // -----------------------------------------------------------------------
+  //  Search, filters, ...
+  // -----------------------------------------------------------------------
+
   const [survivorFilter, setSurvivorFilter] =
     useRecoilState(filterSurvivorAtom);
   const [infectedFilter, setInfectedFilter] =
@@ -39,13 +50,13 @@ export default function ModLibrary() {
   const [utilsFilter, setUtisFilter] = useRecoilState(filterMiscAtom);
   const [searchTerm, setSearchTerm] = useRecoilState(searchTermAtom);
   const [sortingType, setSortingType] = useState<SortingType>("name_asc");
+  const [showOnlyTypeOfMod, setShowOnlyTypeOfMods] = useState<TypeOfMod>("any");
 
-  const [cache] = useRecoilState(cacheAtom);
-  const [preset, setPreset] = useSelectedPreset();
-  const [selectedMods, setSelectedMods] = useRecoilState(selectedModIdsAtom);
-  const [gameDir] = useConfigProperty("gameDir", gameDirAtom);
+  const [conflictingMods, setConfictingMods] = useState<string[]>([]);
 
   const filteredAndSortedMods = useMemo(() => {
+    //if (!cache || !preset || !preset?.enabledMods) return [];
+
     let tempStorage: Mod[] = [];
     let i = 0;
 
@@ -56,6 +67,21 @@ export default function ModLibrary() {
 
       let modName = cache[keyName]?.addontitle;
       let thisMod = cache[keyName] as Mod;
+
+      // Check for mod type
+      switch (showOnlyTypeOfMod) {
+        case "any":
+          break;
+        case "enabled":
+          if (!preset.enabledMods.includes(thisMod.id)) return;
+          break;
+        case "disabled":
+          if (preset.enabledMods.includes(thisMod.id)) return;
+          break;
+        case "conflicting":
+          if (!conflictingMods.includes(thisMod.id)) return;
+          break;
+      }
 
       // Make sure the mod's title fits the search term
       if (searchTerm) {
@@ -101,7 +127,6 @@ export default function ModLibrary() {
         );
       }
     });
-    console.log(tempStorage);
 
     return tempStorage;
   }, [
@@ -115,10 +140,67 @@ export default function ModLibrary() {
     utilsFilter,
     miscFilter,
     sortingType,
+    showOnlyTypeOfMod,
     searchTerm,
   ]);
 
-  if (!preset || !cache)
+  // -----------------------------------------------------------------------
+  //  Conflicting mods
+  // -----------------------------------------------------------------------
+
+  useEffect(() => {
+    if (!preset || !cache || !preset?.enabledMods) return;
+
+    let enabledMods = preset.enabledMods;
+    let collectiveListOfFiles: string[] = [];
+    let tempConflictingMods: string[] = [];
+    let isThisModConflicting = false;
+
+    let occurencesOfFiles: {
+      [key: string]: number;
+    } = {};
+
+    for (let key in cache) {
+      if (enabledMods.includes(key)) {
+        let mod = cache[key];
+        collectiveListOfFiles = collectiveListOfFiles.concat(mod.files);
+      }
+    }
+
+    for (let file of collectiveListOfFiles) {
+      if (occurencesOfFiles[file]) {
+        occurencesOfFiles[file] += 1;
+      } else {
+        occurencesOfFiles[file] = 1;
+      }
+    }
+
+    for (let key in cache) {
+      isThisModConflicting = false;
+
+      if (enabledMods.includes(key)) {
+        let mod = cache[key];
+        for (let file of mod.files) {
+          if (occurencesOfFiles[file] > 1) isThisModConflicting = true;
+        }
+
+        if (isThisModConflicting) {
+          tempConflictingMods.push(mod.id);
+        }
+      }
+    }
+
+    setConfictingMods(tempConflictingMods);
+    console.log(occurencesOfFiles);
+
+    console.log(collectiveListOfFiles);
+  }, [preset, cache]);
+
+  // -----------------------------------------------------------------------
+  //  Render
+  // -----------------------------------------------------------------------
+
+  if (!preset || !cache) {
     return (
       <>
         <Stack alignContent={"center"} height="100%" alignItems={"center"}>
@@ -126,6 +208,7 @@ export default function ModLibrary() {
         </Stack>
       </>
     );
+  }
 
   return (
     <Box
@@ -158,6 +241,31 @@ export default function ModLibrary() {
             )} */}
           </Stack>
 
+          <Stack spacing={2} mx={2}>
+            {conflictingMods.length > 0 && (
+              <Typography color={"firebrick"}>
+                Mods conflicting: {conflictingMods.length}
+              </Typography>
+            )}
+          </Stack>
+
+          <Stack minWidth={"200px"} pr={1} alignItems="center">
+            <TextField
+              label="Type of mod to show"
+              fullWidth
+              select
+              value={showOnlyTypeOfMod}
+              onChange={(e) =>
+                setShowOnlyTypeOfMods(e.target.value as TypeOfMod)
+              }
+            >
+              <MenuItem value="any">Any</MenuItem>
+              <MenuItem value="enabled">Enabled</MenuItem>
+              <MenuItem value="disabled">Dsabled</MenuItem>
+              <MenuItem value="conflicting">Conflicting</MenuItem>
+            </TextField>
+          </Stack>
+
           <Stack minWidth={"200px"} pr={1} alignItems="center">
             <TextField
               label="Sorting"
@@ -179,64 +287,7 @@ export default function ModLibrary() {
           overflowY: "scroll",
         }}
       >
-        <Stack
-          //display={"grid"}
-          //gridTemplateColumns="repeat( auto-fit, minmax(250px, 1fr) )"
-          mr={3}
-          spacing={2}
-        >
-          {/* {Object.keys(cache).map((keyName: string) => {
-            if (i > 30) {
-              return;
-            }
-
-            let modName = cache[keyName]?.addontitle;
-            let thisMod = cache[keyName] as Mod;
-
-            // Make sure the mod's title fits the search term
-            if (searchTerm) {
-              if (!modName) return;
-
-              if (!modName.toLowerCase().includes(searchTerm.toLowerCase()))
-                return;
-            }
-
-            if (
-              gunFilter ||
-              meleeFilter ||
-              grenadeFilter ||
-              survivorFilter ||
-              infectedFilter ||
-              utilsFilter ||
-              miscFilter
-            ) {
-              let matchingFilters = 0;
-              if (thisMod.categories?.includes(gunFilter)) matchingFilters++;
-              if (thisMod.categories?.includes(meleeFilter)) matchingFilters++;
-              if (thisMod.categories?.includes(miscFilter)) matchingFilters++;
-              if (thisMod.categories?.includes(grenadeFilter))
-                matchingFilters++;
-              if (thisMod.categories?.includes(survivorFilter))
-                matchingFilters++;
-              if (thisMod.categories?.includes(infectedFilter))
-                matchingFilters++;
-              if (thisMod.categories?.includes(utilsFilter)) matchingFilters++;
-
-              if (matchingFilters == 0) return;
-            }
-
-            i++;
-
-            return (
-              <ModCard
-                {...cache[keyName]}
-                key={thisMod.id}
-                preset={preset}
-                setPreset={setPreset}
-              />
-            );
-          })} */}
-
+        <Stack mr={3} spacing={2}>
           {filteredAndSortedMods.map((mod) => (
             <ModCard
               {...mod}
@@ -244,6 +295,7 @@ export default function ModLibrary() {
               preset={preset}
               setPreset={setPreset}
               gameDir={gameDir}
+              isConflicting={conflictingMods.includes(mod.id)}
             />
           ))}
         </Stack>
