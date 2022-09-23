@@ -18,7 +18,6 @@ import { cacheAtom } from "@/state/cache";
 import FolderIcon from "@mui/icons-material/Folder";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { useEffect, useState } from "react";
-import Presets from "./Presets";
 import SettingsDialog from "./SettingsDialog";
 import Writer from "./Writer";
 
@@ -106,7 +105,6 @@ export default function Header() {
       </Box>
 
       <SettingsDialog />
-      <Presets />
     </>
   );
 }
