@@ -79,7 +79,8 @@ async function createWindow() {
     webPreferences: {
       preload,
       nodeIntegration: true, // keep     two    !
-      contextIsolation: true, //     these   true
+      contextIsolation: true, //    these   true
+      webSecurity: app.isPackaged,
     },
   });
 
