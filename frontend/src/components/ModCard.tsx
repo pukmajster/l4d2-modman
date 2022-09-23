@@ -27,6 +27,8 @@ export default function ModCard(props: ModEntryProps) {
     );
   }
 
+  console.log(props.gameDir);
+
   // -----------------------------------------
 
   function toggleModEnable() {
@@ -98,7 +100,9 @@ export default function ModCard(props: ModEntryProps) {
             <img
               style={{ aspectRatio: "4/3", height: "100%", width: "100%" }}
               //src={`file:///home/kry/.local/share/Steam/steamapps/common/Left 4 Dead 2/left4dead2/addons/workshop/${props.id}.jpg`}
-              src="https://images.gamebanana.com/img/ico/sprays/588400de9d258.png"
+              src={`file://${props.gameDir}/addons/workshop/${props.id}.jpg`}
+              //src="https://images.gamebanana.com/img/ico/sprays/588400de9d258.png"
+              //src={`file:///home/kry/Downloads/profileIcon_8fl44zptvck91.jpg`}
             ></img>
 
             <Box
@@ -108,7 +112,7 @@ export default function ModCard(props: ModEntryProps) {
               bottom={0}
               right={0}
               width="100%"
-              bgcolor={isEnabled ? "rgba(0,255,0,0.03)" : "rgba(255,0,0,0.03)"}
+              bgcolor={isEnabled ? "rgba(0,255,0,0.1)" : "rgba(255,0,0,0.1)"}
               display="flex"
               p="5px"
               justifyContent={"end"}
