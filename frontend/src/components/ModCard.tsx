@@ -3,13 +3,16 @@ import { selectedModIdsAtom } from "@/state/library";
 import { Preset } from "@/state/profile";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
-import { Box, Checkbox, Chip, Stack, Typography } from "@mui/material";
+import { Box, Button, Chip, Stack, Typography } from "@mui/material";
 import { useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
+
+import OpenInBrowserIcon from "@mui/icons-material/OpenInBrowser";
 
 interface ModEntryProps extends Mod {
   preset: Preset;
   setPreset: (preset: Preset) => void;
+  gameDir: string;
 }
 
 export default function ModCard(props: ModEntryProps) {
@@ -64,9 +67,9 @@ export default function ModCard(props: ModEntryProps) {
 
   return (
     <Stack direction="row" overflow={"hidden"} width="100%">
-      <Stack justifyContent={"center"}>
+      {/* <Stack justifyContent={"center"}>
         <Checkbox onClick={handleSelectToggle} checked={isSelected}></Checkbox>
-      </Stack>
+      </Stack> */}
       <Box pb={0} flex={1} sx={{ contentVisibility: "visible" }}>
         <Box
           flex={1}
@@ -131,7 +134,7 @@ export default function ModCard(props: ModEntryProps) {
           </Box>
 
           <Box flex={1} p={1.5} pb={1}>
-            <Stack justifyContent={"space-between"}>
+            <Stack>
               <Stack>
                 <Typography variant="h6">
                   {props?.addontitle ?? `Corrupt addoninfo for ${props.id}`}
@@ -153,7 +156,7 @@ export default function ModCard(props: ModEntryProps) {
               </Stack>
             </Stack>
 
-            {/* <Stack mt={1} direction="row" spacing={1}>
+            <Stack mt={1} direction="row" spacing={1}>
               <Button
                 onClick={() => openModInBrowser(props.id)}
                 startIcon={<OpenInBrowserIcon />}
@@ -161,13 +164,13 @@ export default function ModCard(props: ModEntryProps) {
                 view in Workshop
               </Button>
 
-              <Button
+              {/* <Button
                 onClick={() => setExpanded((old) => !old)}
                 startIcon={<OpenInBrowserIcon />}
               >
                 details
-              </Button>
-            </Stack> */}
+              </Button> */}
+            </Stack>
           </Box>
         </Box>
       </Box>

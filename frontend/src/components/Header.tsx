@@ -95,6 +95,7 @@ export default function Header() {
           </Stack>
 
           <Button
+            hidden
             disabled
             onClick={openPresetsDialog}
             startIcon={<FolderIcon />}

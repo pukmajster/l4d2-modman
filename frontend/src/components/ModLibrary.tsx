@@ -1,6 +1,8 @@
 import { Mod } from "@/constants/interfaces";
+import useConfigProperty from "@/hooks/useConfigProperty";
 import useSelectedPreset from "@/hooks/useSelectedPreset";
 import { cacheAtom } from "@/state/cache";
+import { gameDirAtom } from "@/state/config";
 import {
   filterGrenadeAtom,
   filterGunAtom,
@@ -14,18 +16,16 @@ import {
 } from "@/state/library";
 import {
   Box,
-  Checkbox,
   CircularProgress,
   MenuItem,
   Stack,
   TextField,
-  Typography,
 } from "@mui/material";
 import { useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
 import ModCard from "./ModCard";
 
-type SortingType = "" | "name_asc" | "name_desc";
+type SortingType = "name_asc" | "name_desc";
 
 export default function ModLibrary() {
   const [survivorFilter, setSurvivorFilter] =
@@ -38,11 +38,12 @@ export default function ModLibrary() {
   const [miscFilter, setMiscFilter] = useRecoilState(filterUtilsAtom);
   const [utilsFilter, setUtisFilter] = useRecoilState(filterMiscAtom);
   const [searchTerm, setSearchTerm] = useRecoilState(searchTermAtom);
-  const [sortingType, setSortingType] = useState<SortingType>("");
+  const [sortingType, setSortingType] = useState<SortingType>("name_asc");
 
   const [cache] = useRecoilState(cacheAtom);
   const [preset, setPreset] = useSelectedPreset();
   const [selectedMods, setSelectedMods] = useRecoilState(selectedModIdsAtom);
+  const [gameDir] = useConfigProperty("gameDir", gameDirAtom);
 
   const filteredAndSortedMods = useMemo(() => {
     let tempStorage: Mod[] = [];
@@ -148,12 +149,12 @@ export default function ModLibrary() {
           alignItems="center"
         >
           <Stack direction={"row"} alignItems="center" flex={1}>
-            <Checkbox disabled></Checkbox>
+            {/* <Checkbox disabled></Checkbox>
             {selectedMods.length > 0 && (
               <Typography component="span">
                 Selected: {selectedMods.length}
               </Typography>
-            )}
+            )} */}
           </Stack>
 
           <Stack minWidth={"200px"} pr={1} alignItems="center">
@@ -164,7 +165,6 @@ export default function ModLibrary() {
               value={sortingType}
               onChange={(e) => setSortingType(e.target.value as SortingType)}
             >
-              <MenuItem value="">- NONE -</MenuItem>
               <MenuItem value="name_asc">Name (Ascending)</MenuItem>
               <MenuItem value="name_desc">Name (Descending)</MenuItem>
             </TextField>
@@ -237,6 +237,7 @@ export default function ModLibrary() {
               key={mod.id}
               preset={preset}
               setPreset={setPreset}
+              gameDir={gameDir}
             />
           ))}
         </Stack>
