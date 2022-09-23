@@ -49,7 +49,13 @@ export default function Sidebar() {
   }
 
   return (
-    <Box p={2} height="100%" overflow="scroll">
+    <Box
+      p={2}
+      height="100%"
+      sx={{
+        overflowY: "hidden",
+      }}
+    >
       <Stack justifyContent={"space-between"} height="100%">
         <Stack spacing={2}>
           <TextField

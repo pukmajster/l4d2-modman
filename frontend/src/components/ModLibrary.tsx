@@ -115,6 +115,7 @@ export default function ModLibrary() {
     utilsFilter,
     miscFilter,
     sortingType,
+    searchTerm,
   ]);
 
   if (!preset || !cache)
@@ -129,7 +130,7 @@ export default function ModLibrary() {
   return (
     <Box
       height="100%"
-      overflow="scroll"
+      overflow="hidden"
       display={"flex"}
       flexDirection="column"
     >
@@ -172,7 +173,12 @@ export default function ModLibrary() {
         </Stack>
       </Stack>
 
-      <Box flex="1" overflow="scroll">
+      <Box
+        flex="1"
+        sx={{
+          overflowY: "scroll",
+        }}
+      >
         <Stack
           //display={"grid"}
           //gridTemplateColumns="repeat( auto-fit, minmax(250px, 1fr) )"
