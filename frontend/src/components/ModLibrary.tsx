@@ -290,9 +290,9 @@ export default function ModLibrary() {
             >
               <MenuItem value="any">Any</MenuItem>
               <MenuItem value="enabled">Enabled</MenuItem>
-              <MenuItem value="disabled">Dsabled</MenuItem>
+              <MenuItem value="disabled">Disabled</MenuItem>
               <MenuItem value="conflicting">Conflicting</MenuItem>
-              <MenuItem value="corrupt">Corrupt</MenuItem>
+              <MenuItem value="corrupt">Corrupt addoninfo</MenuItem>
             </TextField>
           </Stack>
 
