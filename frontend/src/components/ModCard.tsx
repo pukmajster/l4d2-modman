@@ -95,7 +95,12 @@ export default function ModCard(props: ModEntryProps) {
             // borderLeft={`4px solid ${enabled ? "rgb(0,255,0)" : "rgb(255,0,0)"}`}
           >
             <img
-              style={{ aspectRatio: "4/3", height: "100%", width: "100%" }}
+              style={{
+                aspectRatio: "4/3",
+                height: "100%",
+                width: "100%",
+                opacity: isEnabled ? "1" : "0.5",
+              }}
               //src={`file:///home/kry/.local/share/Steam/steamapps/common/Left 4 Dead 2/left4dead2/addons/workshop/${props.id}.jpg`}
               src={`file://${props.gameDir}/addons/workshop/${props.id}.jpg`}
               //src="https://images.gamebanana.com/img/ico/sprays/588400de9d258.png"
@@ -109,26 +114,33 @@ export default function ModCard(props: ModEntryProps) {
               bottom={0}
               right={0}
               width="100%"
-              bgcolor={isEnabled ? "rgba(0,255,0,0.1)" : "rgba(255,0,0,0.1)"}
+              //bgcolor={isEnabled ? "rgba(0,255,0,0.01)" : "rgba(255,0,0,0.01)"}
+              bgcolor="transparent"
               display="flex"
-              p="5px"
+              //p="5px"
+              p="0"
               justifyContent={"end"}
               alignItems={"end"}
               onClick={() => toggleModEnable()}
               border="none"
               boxShadow="none"
               sx={{ cursor: "pointer" }}
+              // borderRight={`4px solid ${
+              //   isEnabled ? "rgba(0,255,0,1)" : "rgba(255,0,0,1)"
+              // }`}
             >
               <Box
-                p={0.5}
+                //p={0.5}
+                px={1}
+                width="100%"
                 display={"flex"}
-                justifyContent={"center"}
+                justifyContent={"space-between"}
                 alignItems={"center"}
-                borderRadius="50%"
-                bgcolor={
-                  isEnabled ? "rgba(0,255,0,0.35)" : "rgba(255,0,0,0.35)"
-                }
+                //borderRadius="50%"
+                bgcolor={isEnabled ? "rgba(0,120,0,0.7)" : "rgba(120,0,0,0.7)"}
+                sx={{ backdropFilter: "blur(15px)" }}
               >
+                {isEnabled ? "Enabled" : "Disabled"}
                 {isEnabled ? <CheckIcon /> : <CloseIcon />}
               </Box>
             </Box>
