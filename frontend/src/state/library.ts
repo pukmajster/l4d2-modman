@@ -42,7 +42,17 @@ export const filterUtilsAtom = atom({
   default: "" as string,
 });
 
+export const filterFiletypeAtom = atom({
+  key: "filterFiletypeAtom",
+  default: "" as string,
+});
+
 export const selectedModIdsAtom = atom({
   key: "selectedModIdsAtom",
   default: [] as string[],
+});
+
+export const maxRowsAtom = atom({
+  key: "maxRowsAtom",
+  default: 30,
 });

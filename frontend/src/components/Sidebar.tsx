@@ -1,5 +1,6 @@
 import categories from "@/constants/categories";
 import {
+  filterFiletypeAtom,
   filterGrenadeAtom,
   filterGunAtom,
   filterInfectedAtom,
@@ -31,6 +32,8 @@ export default function Sidebar() {
   const [gunFilter, setGunFilter] = useRecoilState(filterGunAtom);
   const [miscFilter, setMiscFilter] = useRecoilState(filterMiscAtom);
   const [utilsFilter, setUtilsFilter] = useRecoilState(filterUtilsAtom);
+  const [filetypeFilter, setFiletypeFilter] =
+    useRecoilState(filterFiletypeAtom);
   const [searchTerm, setSearchTerm] = useRecoilState(searchTermAtom);
 
   function clearFilters() {
@@ -114,6 +117,20 @@ export default function Sidebar() {
           </TextField>
 
           <TextField
+            label="Utils"
+            select
+            value={utilsFilter}
+            onChange={(e) => setUtilsFilter(e.target.value)}
+          >
+            <MenuItem value="">- NONE -</MenuItem>
+            {categories.utils.map((entry) => (
+              <MenuItem key={entry} value={entry}>
+                {entry}
+              </MenuItem>
+            ))}
+          </TextField>
+
+          <TextField
             label="Survivor"
             select
             value={survivorFilter}
@@ -142,13 +159,27 @@ export default function Sidebar() {
           </TextField>
 
           <TextField
-            label="Utils"
+            label="Misc"
             select
-            value={utilsFilter}
-            onChange={(e) => setUtilsFilter(e.target.value)}
+            value={miscFilter}
+            onChange={(e) => setMiscFilter(e.target.value)}
           >
             <MenuItem value="">- NONE -</MenuItem>
-            {categories.utils.map((entry) => (
+            {categories.misc.map((entry) => (
+              <MenuItem key={entry} value={entry}>
+                {entry}
+              </MenuItem>
+            ))}
+          </TextField>
+
+          <TextField
+            label="File Type"
+            select
+            value={filetypeFilter}
+            onChange={(e) => setFiletypeFilter(e.target.value)}
+          >
+            <MenuItem value="">- NONE -</MenuItem>
+            {categories.filetypes.map((entry) => (
               <MenuItem key={entry} value={entry}>
                 {entry}
               </MenuItem>

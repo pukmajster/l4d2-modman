@@ -4,6 +4,7 @@ import useSelectedPreset from "@/hooks/useSelectedPreset";
 import { cacheAtom } from "@/state/cache";
 import { gameDirAtom } from "@/state/config";
 import {
+  filterFiletypeAtom,
   filterGrenadeAtom,
   filterGunAtom,
   filterInfectedAtom,
@@ -11,6 +12,7 @@ import {
   filterMiscAtom,
   filterSurvivorAtom,
   filterUtilsAtom,
+  maxRowsAtom,
   searchTermAtom,
   selectedModIdsAtom,
 } from "@/state/library";
@@ -43,6 +45,8 @@ export default function ModLibrary() {
     useRecoilState(filterSurvivorAtom);
   const [infectedFilter, setInfectedFilter] =
     useRecoilState(filterInfectedAtom);
+  const [filetypeFilter, setFiletypeFilter] =
+    useRecoilState(filterFiletypeAtom);
   const [grenadeFilter, setGrenadeFilter] = useRecoilState(filterGrenadeAtom);
   const [meleeFilter, setMeleeFilter] = useRecoilState(filterMeleeAtom);
   const [gunFilter, setGunFilter] = useRecoilState(filterGunAtom);
@@ -54,6 +58,8 @@ export default function ModLibrary() {
 
   const [conflictingMods, setConfictingMods] = useState<string[]>([]);
 
+  const [maxRows, setMaxRows] = useRecoilState(maxRowsAtom);
+
   const filteredAndSortedMods = useMemo(() => {
     //if (!cache || !preset || !preset?.enabledMods) return [];
 
@@ -61,7 +67,7 @@ export default function ModLibrary() {
     let i = 0;
 
     Object.keys(cache).map((keyName: string) => {
-      if (i > 30) {
+      if (i > (maxRows ?? 0)) {
         return;
       }
 
@@ -97,7 +103,8 @@ export default function ModLibrary() {
         survivorFilter ||
         infectedFilter ||
         utilsFilter ||
-        miscFilter
+        miscFilter ||
+        filetypeFilter
       ) {
         let matchingFilters = 0;
         if (thisMod.categories?.includes(gunFilter)) matchingFilters++;
@@ -107,6 +114,7 @@ export default function ModLibrary() {
         if (thisMod.categories?.includes(survivorFilter)) matchingFilters++;
         if (thisMod.categories?.includes(infectedFilter)) matchingFilters++;
         if (thisMod.categories?.includes(utilsFilter)) matchingFilters++;
+        if (thisMod.categories?.includes(filetypeFilter)) matchingFilters++;
 
         if (matchingFilters == 0) return;
       }
@@ -139,9 +147,11 @@ export default function ModLibrary() {
     infectedFilter,
     utilsFilter,
     miscFilter,
+    filetypeFilter,
     sortingType,
     showOnlyTypeOfMod,
     searchTerm,
+    maxRows,
   ]);
 
   // -----------------------------------------------------------------------
@@ -247,6 +257,22 @@ export default function ModLibrary() {
                 Mods conflicting: {conflictingMods.length}
               </Typography>
             )}
+          </Stack>
+
+          <Stack minWidth={"200px"} pr={1} alignItems="center">
+            <TextField
+              label="Number of mods to show"
+              fullWidth
+              select
+              value={maxRows}
+              onChange={(e) => setMaxRows(+e.target.value)}
+            >
+              <MenuItem value="30">30</MenuItem>
+              <MenuItem value="50">50</MenuItem>
+              <MenuItem value="100">100</MenuItem>
+              <MenuItem value="300">300</MenuItem>
+              <MenuItem value="999">All</MenuItem>
+            </TextField>
           </Stack>
 
           <Stack minWidth={"200px"} pr={1} alignItems="center">
