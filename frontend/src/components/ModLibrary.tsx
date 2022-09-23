@@ -29,7 +29,7 @@ import { useRecoilState } from "recoil";
 import ModCard from "./ModCard";
 
 type SortingType = "name_asc" | "name_desc";
-type TypeOfMod = "any" | "enabled" | "disabled" | "conflicting";
+type TypeOfMod = "any" | "enabled" | "disabled" | "conflicting" | "corrupt";
 
 export default function ModLibrary() {
   const [cache] = useRecoilState(cacheAtom);
@@ -86,6 +86,9 @@ export default function ModLibrary() {
           break;
         case "conflicting":
           if (!conflictingMods.includes(thisMod.id)) return;
+          break;
+        case "corrupt":
+          if (thisMod.addontitle) return;
           break;
       }
 
@@ -289,6 +292,7 @@ export default function ModLibrary() {
               <MenuItem value="enabled">Enabled</MenuItem>
               <MenuItem value="disabled">Dsabled</MenuItem>
               <MenuItem value="conflicting">Conflicting</MenuItem>
+              <MenuItem value="corrupt">Corrupt</MenuItem>
             </TextField>
           </Stack>
 
