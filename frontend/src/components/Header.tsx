@@ -1,4 +1,7 @@
-import { showModmanConfigDialogAtom } from "@/state/dialogs";
+import {
+  showModmanConfigDialogAtom,
+  showPresetsDialogAtom,
+} from "@/state/dialogs";
 import { Box, Button, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useRecoilState } from "recoil";
@@ -15,6 +18,7 @@ import { cacheAtom } from "@/state/cache";
 import FolderIcon from "@mui/icons-material/Folder";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { useEffect, useState } from "react";
+import Presets from "./Presets";
 import SettingsDialog from "./SettingsDialog";
 import Writer from "./Writer";
 
@@ -26,6 +30,14 @@ export default function Header() {
     profileSelectedPresetIdAtom
   );
   const [preset] = useRecoilState(profileSelectedPresetAtom);
+
+  const [showPresetsDialog, setShowPresetsDialog] = useRecoilState(
+    showPresetsDialogAtom
+  );
+
+  function openPresetsDialog() {
+    setShowPresetsDialog(true);
+  }
 
   const [requestingCache, setRequestingCache] = useState(false);
 
@@ -82,13 +94,18 @@ export default function Header() {
             </Stack>
           </Stack>
 
-          <Button disabled startIcon={<FolderIcon />}>
+          <Button
+            disabled
+            onClick={openPresetsDialog}
+            startIcon={<FolderIcon />}
+          >
             preset: {presetName}
           </Button>
         </Stack>
       </Box>
 
       <SettingsDialog />
+      <Presets />
     </>
   );
 }

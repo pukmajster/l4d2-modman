@@ -3,16 +3,7 @@ import { selectedModIdsAtom } from "@/state/library";
 import { Preset } from "@/state/profile";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
-import OpenInBrowserIcon from "@mui/icons-material/OpenInBrowser";
-import {
-  Box,
-  Button,
-  Checkbox,
-  Chip,
-  Collapse,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Checkbox, Chip, Stack, Typography } from "@mui/material";
 import { useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -25,9 +16,6 @@ export default function ModCard(props: ModEntryProps) {
   const [expanded, setExpanded] = useState(false);
   const isEnabled = props.preset?.enabledMods?.includes(props.id) ?? false;
   const isCorrupt = props?.error;
-
-  const bgcolor = isEnabled ? "rgba(0,255,0,0.05)" : "rgba(255,0,0,0.05)";
-  const corruptcolor = isCorrupt ? "rgba(14,14,14.22)" : "transparent";
 
   function openModInBrowser(steamid: string) {
     window.open(
@@ -79,7 +67,7 @@ export default function ModCard(props: ModEntryProps) {
       <Stack justifyContent={"center"}>
         <Checkbox onClick={handleSelectToggle} checked={isSelected}></Checkbox>
       </Stack>
-      <Stack pb={0} flex={1} sx={{ contentVisibility: "visible" }}>
+      <Box pb={0} flex={1} sx={{ contentVisibility: "visible" }}>
         <Box
           flex={1}
           textAlign={"left"}
@@ -91,7 +79,7 @@ export default function ModCard(props: ModEntryProps) {
           borderRadius={1}
           overflow="hidden"
           sx={{
-            gridTemplateColumns: { xs: "1fr", md: "minmax(148px, 15%) auto" },
+            gridTemplateColumns: { xs: "1fr", md: "minmax(148px, 5%) auto" },
             transition: "background-color 0.14s ease",
             "&:hover": {
               bgcolor: "rgba(52,52,52,0.5)",
@@ -155,71 +143,34 @@ export default function ModCard(props: ModEntryProps) {
 
                 <Box mt={1} display="flex" gap={1} flexWrap="wrap">
                   {props?.categories?.map((cat: string) => (
-                    <Chip label={cat} size="small"></Chip>
+                    <Chip
+                      sx={{ borderRadius: "2px" }}
+                      label={cat}
+                      size="small"
+                    ></Chip>
                   ))}
                 </Box>
               </Stack>
-
-              <Stack mt={1} direction="row" spacing={1}>
-                <Button
-                  onClick={() => openModInBrowser(props.id)}
-                  startIcon={<OpenInBrowserIcon />}
-                >
-                  view in Workshop
-                </Button>
-
-                <Button
-                  onClick={() => setExpanded((old) => !old)}
-                  startIcon={<OpenInBrowserIcon />}
-                >
-                  details
-                </Button>
-              </Stack>
             </Stack>
 
-            {/* <Stack>
-            <Checkbox
-              onClick={() => toggleModEnable()}
-              checked={isEnabled}
-              color={isEnabled ? "primary" : "default"}
-            ></Checkbox>
-          </Stack> */}
+            {/* <Stack mt={1} direction="row" spacing={1}>
+              <Button
+                onClick={() => openModInBrowser(props.id)}
+                startIcon={<OpenInBrowserIcon />}
+              >
+                view in Workshop
+              </Button>
+
+              <Button
+                onClick={() => setExpanded((old) => !old)}
+                startIcon={<OpenInBrowserIcon />}
+              >
+                details
+              </Button>
+            </Stack> */}
           </Box>
         </Box>
-
-        <Collapse in={expanded}>
-          <Box bgcolor={"#191919"} p={2} borderTop="1px solid #101010">
-            <Box
-              display={"grid"}
-              gap={1}
-              maxWidth="100%"
-              textOverflow="ellipsis"
-              overflow="hidden"
-              sx={{
-                gridTemplateColumns: {
-                  md: "1fr",
-                  lg: "200px 1fr",
-                },
-              }}
-            >
-              <Typography>Description</Typography>
-              <Typography variant="caption">
-                {props.addondescription}
-              </Typography>
-              <Typography>Tagline</Typography>
-              <Typography variant="caption">{props.addontagline}</Typography>
-              <Typography>Version</Typography>
-              <Typography variant="caption">v{props.addonversion}</Typography>
-              {/* <Typography>Files</Typography>
-              <Typography fontSize={12} textOverflow="ellipsis">
-                {props.files.map((f: string) => (
-                  <div>{f}</div>
-                ))}
-              </Typography> */}
-            </Box>
-          </Box>
-        </Collapse>
-      </Stack>
+      </Box>
     </Stack>
   );
 }

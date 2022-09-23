@@ -18,8 +18,8 @@ export const profileSelectedPresetIdAtom = atom({
   }),
 });
 
-export const profilePresetsAtom = atom({
-  key: "profilePresetsAtom",
+export const profileAllPresetsAtom = atom({
+  key: "profileAllPresetsAtom",
   default: {} as Presets,
 });
 
