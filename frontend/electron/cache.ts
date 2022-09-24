@@ -177,6 +177,8 @@ export async function buildCache() {
       if (!file.endsWith(".vpk")) return;
       const pakPath = path.join(addonsDir, file);
 
+      console.log(" ----------- parsing " + pakPath + " ----------");
+
       let modInfo = {
         files: <string[]>[],
         categories: <string[]>[],
@@ -213,14 +215,17 @@ export async function buildCache() {
         modInfo["id"] = addonId;
 
         try {
+          let addoninfoFile = vpk.getFile("addoninfo.txt");
+          if (!addoninfoFile) throw new Error("Missing addoninfo.txt");
+          let addoninfo = addoninfoFile.toString("utf-8");
+
           // Read the file buffer and turn it into a string our VDF parser can read
-          let addoninfo = vpk.getFile("addoninfo.txt").toString("utf-8");
           let addoninfoData = vdf.parse(addoninfo).AddonInfo;
 
           // Take a look at the addoninfo.txt file and see what useful information we can snatch
           for (let item in addoninfoData) {
             let key = item.toLocaleLowerCase();
-            let value = addoninfoData[item];
+            let value = addoninfoData[item].toString();
 
             // If the value of the key is 0 we don't care about it
             if (value == "0") continue;
@@ -236,11 +241,13 @@ export async function buildCache() {
         } catch (e) {
           console.log("error parsing addoninfo for mod " + addonId);
           modInfo["error"] = "Error parsing addoninfo.txt";
+          //console.log(addoninfo);
+          //console.log(addoninfo);
         }
 
         cache[addonId] = modInfo;
       } catch (e) {
-        console.log(e);
+        console.log(e.message);
       }
     });
   } catch (e) {
