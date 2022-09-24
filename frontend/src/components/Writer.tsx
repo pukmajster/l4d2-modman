@@ -4,7 +4,7 @@ import useSelectedPreset from "@/hooks/useSelectedPreset";
 import { cacheAtom } from "@/state/cache";
 import { gameDirAtom } from "@/state/config";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
-import { Button, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -34,9 +34,8 @@ export default function Writer() {
   return (
     <>
       <Button onClick={write} startIcon={<FileUploadIcon />}>
-        Use these mods
+        {writingState ? writingState : "Use these mods"}
       </Button>
-      <Typography>{writingState}</Typography>
     </>
   );
 }

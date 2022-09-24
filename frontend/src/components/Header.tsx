@@ -78,7 +78,7 @@ export default function Header() {
               onClick={updateCacheOnRequest}
               startIcon={<CachedIcon />}
             >
-              {requestingCache ? "working..." : "refresh"}
+              {requestingCache ? "working..." : "Detect mods"}
             </Button>
             <Writer />
 
