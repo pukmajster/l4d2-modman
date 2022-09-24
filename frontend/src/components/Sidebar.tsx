@@ -15,6 +15,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import {
   Box,
   Button,
+  Divider,
   InputAdornment,
   MenuItem,
   TextField,
@@ -45,6 +46,7 @@ export default function Sidebar() {
     setGrenadeFilter("");
     setMiscFilter("");
     setUtilsFilter("");
+    setFiletypeFilter("");
   }
 
   function openWorkshop() {
@@ -73,6 +75,22 @@ export default function Sidebar() {
               ),
             }}
           ></TextField>
+
+          <TextField
+            label="File Type"
+            select
+            value={filetypeFilter}
+            onChange={(e) => setFiletypeFilter(e.target.value)}
+          >
+            <MenuItem value="">- NONE -</MenuItem>
+            {categories.filetypes.map((entry) => (
+              <MenuItem key={entry} value={entry}>
+                {entry}
+              </MenuItem>
+            ))}
+          </TextField>
+
+          <Divider />
 
           <TextField
             label="Gun"
@@ -166,20 +184,6 @@ export default function Sidebar() {
           >
             <MenuItem value="">- NONE -</MenuItem>
             {categories.misc.map((entry) => (
-              <MenuItem key={entry} value={entry}>
-                {entry}
-              </MenuItem>
-            ))}
-          </TextField>
-
-          <TextField
-            label="File Type"
-            select
-            value={filetypeFilter}
-            onChange={(e) => setFiletypeFilter(e.target.value)}
-          >
-            <MenuItem value="">- NONE -</MenuItem>
-            {categories.filetypes.map((entry) => (
               <MenuItem key={entry} value={entry}>
                 {entry}
               </MenuItem>
