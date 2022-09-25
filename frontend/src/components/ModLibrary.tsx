@@ -155,6 +155,7 @@ export default function ModLibrary() {
     showOnlyTypeOfMod,
     searchTerm,
     maxRows,
+    conflictingMods,
   ]);
 
   // -----------------------------------------------------------------------
