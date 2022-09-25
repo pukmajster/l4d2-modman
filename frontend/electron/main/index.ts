@@ -54,6 +54,12 @@ ipcMain.handle("cache:request", async (e, forceNewBuild: boolean = false) => {
   return requestCache(forceNewBuild);
 });
 
+ipcMain.handle("external:openLinkInBrowser", async (e, url: string) => {
+  return shell.openExternal(url);
+});
+
+shell.openExternal("https://google.com");
+
 // ---------------------------------------------------
 // Preload
 // ---------------------------------------------------
@@ -84,13 +90,24 @@ async function createWindow() {
     },
   });
 
-  win.webContents.on("will-navigate", function (e, url) {
+  /* win.webContents.on("will-navigate", function (e, url) {
     e.preventDefault();
-    console.log("opening in external browser");
+    console.log("opening in external browser: " + url);
 
     if (process.platform === "linux")
       require("child_process").exec("xdg-open " + url);
     else shell.openExternal(url);
+  }); */
+
+  win.webContents.setWindowOpenHandler(({ url }) => {
+    // config.fileProtocol is my custom file protocol
+    console.log("opening in external browser: " + url);
+    // if (url.startsWith(config.fileProtocol)) {
+    //     return { action: 'allow' };
+    // }
+    // open url in a browser and prevent default
+    shell.openExternal(url);
+    return { action: "deny" };
   });
 
   // Handle for directory dialog

@@ -50,7 +50,9 @@ export default function Sidebar() {
   }
 
   function openWorkshop() {
-    window.open(`https://steamcommunity.com/app/550/workshop/`, "_blank");
+    window.externalApi.openLinkInBrowser(
+      `https://steamcommunity.com/app/550/workshop/`
+    );
   }
 
   return (

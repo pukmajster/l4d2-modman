@@ -22,9 +22,8 @@ export default function ModCard(props: ModEntryProps) {
   const isCorrupt = props?.error;
 
   function openModInBrowser(steamid: string) {
-    window.open(
-      `https://steamcommunity.com/sharedfiles/filedetails/?id=${steamid}`,
-      "_blank"
+    window.externalApi.openLinkInBrowser(
+      `https://steamcommunity.com/sharedfiles/filedetails/?id=${steamid}`
     );
   }
 

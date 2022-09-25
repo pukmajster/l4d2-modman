@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer } from "electron";
+import { contextBridge, ipcRenderer, shell } from "electron";
 import { STORE_GET, STORE_SET } from "../stores";
 
 contextBridge.exposeInMainWorld("configApi", {
@@ -24,6 +24,20 @@ contextBridge.exposeInMainWorld("cacheApi", {
   requestCache: (forceNewBuild: boolean = false) =>
     ipcRenderer.invoke("cache:request", forceNewBuild),
 });
+
+// contextBridge.exposeInMainWorld("externalApi", {
+//   openLinkInBrowser: (url: string) =>
+//     ipcRenderer.invoke("external:openLinkInBrowser", url),
+// });
+
+contextBridge.exposeInMainWorld("externalApi", {
+  openLinkInBrowser: (url: string) => openLinkInBrowser(url),
+});
+
+function openLinkInBrowser(url: string) {
+  console.log(" ------------ " + url + " ------------------");
+  shell.openExternal(url);
+}
 
 function domReady(
   condition: DocumentReadyState[] = ["complete", "interactive"]

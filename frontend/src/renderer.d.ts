@@ -22,6 +22,10 @@ export interface ICacheAPI {
   requestCache: (forceNewBuild: boolean = false) => Cache;
 }
 
+export interface IExternalAPI {
+  openLinkInBrowser: (url: string) => void;
+}
+
 // Properties
 type IConfigProperty = "gameDir";
 type IProfileProperty = "selectedPreset" | "presets" | `presets.${string}`;
@@ -54,5 +58,6 @@ declare global {
     dialogApi: IDialogAPI;
     addonInfoApi: IAddonInfoAPI;
     cacheApi: ICacheAPI;
+    externalApi: IExternalAPI;
   }
 }
