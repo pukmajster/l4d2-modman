@@ -4,7 +4,7 @@ import { Preset } from "@/state/profile";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Box, Button, Chip, Stack, Typography } from "@mui/material";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useRecoilState } from "recoil";
 
 import OpenInBrowserIcon from "@mui/icons-material/OpenInBrowser";
@@ -17,9 +17,7 @@ interface ModEntryProps extends Mod {
 }
 
 export default function ModCard(props: ModEntryProps) {
-  const [expanded, setExpanded] = useState(false);
   const isEnabled = props.preset?.enabledMods?.includes(props.id) ?? false;
-  const isCorrupt = props?.error;
 
   function openModInBrowser(steamid: string) {
     window.externalApi.openLinkInBrowser(
@@ -144,12 +142,13 @@ export default function ModCard(props: ModEntryProps) {
                 {props.isConflicting && (
                   <Box
                     p={0.5}
+                    width="100%"
                     sx={{
-                      backdropFilter: "blur(15px)",
+                      backdropFilter: "blur(5px)",
                       bgcolor: "rgba(182,0,0,0.4)",
                     }}
                   >
-                    <Typography fontSize="12px">
+                    <Typography fontSize="9px">
                       THIS MOD IS CONFLICTING WITH ANOTHER MOD!
                     </Typography>
                   </Box>
@@ -160,11 +159,13 @@ export default function ModCard(props: ModEntryProps) {
 
           <Box
             px={1.4}
+            left={0}
+            right={0}
             width="100%"
             display={"flex"}
             justifyContent={"space-between"}
             alignItems={"center"}
-            bgcolor={isEnabled ? "rgba(0,120,0,0.5)" : "rgba(120,120,120,0.5)"}
+            bgcolor={isEnabled ? "rgba(0,120,0,0.8)" : "rgba(120,120,120,0.8)"}
             sx={{ backdropFilter: "blur(15px)" }}
           >
             <Typography variant="caption" lineHeight={0}>
