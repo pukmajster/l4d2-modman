@@ -17,7 +17,7 @@ const App: React.FC = () => {
           <Box
             display="grid"
             gridTemplateColumns={"256px 1fr"}
-            height="calc(100vh - 52px)"
+            height="calc(100vh - 48px)"
           >
             <Sidebar />
             <ModLibrary />

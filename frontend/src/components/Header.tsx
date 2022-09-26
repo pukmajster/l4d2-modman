@@ -82,15 +82,34 @@ export default function Header() {
             </Button>
             <Writer />
 
-            <Stack>
-              <Typography variant="caption">
-                Installed mods: {Object.keys(cache)?.length}
+            <Stack direction="row" alignItems={"center"} pl={2}>
+              <Typography variant="button" fontSize={17}>
+                {Object.keys(cache)?.length}
+              </Typography>
+              <Typography variant="caption" lineHeight={1.2} pl={0.5} pt={0.4}>
+                mods installed
               </Typography>
 
-              <Typography variant="caption">
-                Enabled mods: {preset?.enabledMods?.length}
+              <Box mr={3}></Box>
+
+              <Typography variant="button" fontSize={17}>
+                {preset?.enabledMods?.length}
+              </Typography>
+              <Typography variant="caption" lineHeight={1.2} pl={0.5} pt={0.4}>
+                mods enabled
               </Typography>
             </Stack>
+
+            {/* <Stack justifyContent={"center"} direction="row">
+              <Typography variant="caption" lineHeight={1.2}>
+                Installed mods: <b>{Object.keys(cache)?.length}</b>
+              </Typography>
+
+              <Typography variant="caption" lineHeight={1.2}>
+                Enabled mods:&nbsp;&nbsp;
+                <b>{preset?.enabledMods?.length}</b>
+              </Typography>
+            </Stack> */}
           </Stack>
 
           <Button
