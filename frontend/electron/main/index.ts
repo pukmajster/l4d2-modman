@@ -58,8 +58,6 @@ ipcMain.handle("external:openLinkInBrowser", async (e, url: string) => {
   return shell.openExternal(url);
 });
 
-shell.openExternal("https://google.com");
-
 // ---------------------------------------------------
 // Preload
 // ---------------------------------------------------
@@ -89,6 +87,7 @@ async function createWindow() {
       webSecurity: app.isPackaged,
     },
   });
+  win.removeMenu();
 
   /* win.webContents.on("will-navigate", function (e, url) {
     e.preventDefault();
