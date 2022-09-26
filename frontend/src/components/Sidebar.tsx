@@ -64,7 +64,7 @@ export default function Sidebar() {
       }}
     >
       <Stack justifyContent={"space-between"} height="100%">
-        <Stack spacing={2}>
+        <Stack spacing={1.5}>
           <TextField
             label="Search"
             onChange={(e) => setSearchTerm(e.target.value)}
