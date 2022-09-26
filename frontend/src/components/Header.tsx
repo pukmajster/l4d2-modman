@@ -13,9 +13,8 @@ import {
 } from "@/state/profile";
 import CachedIcon from "@mui/icons-material/Cached";
 
-import { requestCache } from "@/functions/requestCache";
+import { collectOnlineAddonInfo, requestCache } from "@/functions/requestCache";
 import { cacheAtom } from "@/state/cache";
-import FolderIcon from "@mui/icons-material/Folder";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { useEffect, useState } from "react";
 import SettingsDialog from "./SettingsDialog";
@@ -52,6 +51,10 @@ export default function Header() {
   useEffect(() => {
     baseCacheRequest(false);
   }, []);
+
+  function fetchOnline() {
+    collectOnlineAddonInfo(cache);
+  }
 
   async function baseCacheRequest(forceNewBuild: boolean) {
     try {
@@ -99,27 +102,18 @@ export default function Header() {
                 mods enabled
               </Typography>
             </Stack>
-
-            {/* <Stack justifyContent={"center"} direction="row">
-              <Typography variant="caption" lineHeight={1.2}>
-                Installed mods: <b>{Object.keys(cache)?.length}</b>
-              </Typography>
-
-              <Typography variant="caption" lineHeight={1.2}>
-                Enabled mods:&nbsp;&nbsp;
-                <b>{preset?.enabledMods?.length}</b>
-              </Typography>
-            </Stack> */}
           </Stack>
+          {/* 
+        <Button
+          hidden
+          disabled
+          onClick={openPresetsDialog}
+          startIcon={<FolderIcon />}
+        >
+          preset: {presetName}
+        </Button> */}
 
-          <Button
-            hidden
-            disabled
-            onClick={openPresetsDialog}
-            startIcon={<FolderIcon />}
-          >
-            preset: {presetName}
-          </Button>
+          <Button onClick={fetchOnline}>fetch online</Button>
         </Stack>
       </Box>
 

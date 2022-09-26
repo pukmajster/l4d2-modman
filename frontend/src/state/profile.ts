@@ -1,6 +1,11 @@
+import { IPublishedFileDetails } from "@/functions/requestCache";
 import { atom } from "recoil";
 
 type ModId = string;
+
+interface IProfileOnlineAddoninfo {
+  [key: string]: IPublishedFileDetails;
+}
 
 let selectedPreset = window.profileApi.get({
   property: "selectedPreset",
@@ -31,4 +36,12 @@ export const profileSelectedPresetAtom = atom({
     property: `presets.${selectedPreset}`,
     fallback: "default",
   }) as Preset,
+});
+
+export const profileAllOnlineAddoninfosAtom = atom({
+  key: "profileAllOnlineAddoninfosAtom",
+  default: window.profileApi.get({
+    property: `onlineAddoninfo`,
+    fallback: "default",
+  }) as IProfileOnlineAddoninfo,
 });

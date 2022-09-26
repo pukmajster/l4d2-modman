@@ -9,6 +9,15 @@ export const gameDirAtom = atom({
   }),
 });
 
+export const allowNetworkModFetchAtom = atom({
+  key: "allowNetworkModFetchAtom",
+  default: window.configApi.get({
+    property: "allowNetworkModFetch",
+    fallback: false,
+  }),
+});
+
+// Game directories
 export const workshopModsDirAtom = selector({
   key: "workshopModsDirAtom",
   get: ({ get }) => {

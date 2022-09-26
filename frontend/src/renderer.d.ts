@@ -19,7 +19,7 @@ export interface IAddonInfoAPI {
 }
 
 export interface ICacheAPI {
-  requestCache: (forceNewBuild: boolean = false) => Cache;
+  requestCache: (forceNewBuild: boolean) => Cache;
 }
 
 export interface IExternalAPI {
@@ -27,8 +27,13 @@ export interface IExternalAPI {
 }
 
 // Properties
-type IConfigProperty = "gameDir";
-type IProfileProperty = "selectedPreset" | "presets" | `presets.${string}`;
+type IConfigProperty = "gameDir" | "allowNetworkModFetch";
+type IProfileProperty =
+  | "selectedPreset"
+  | "presets"
+  | "onlineAddoninfo"
+  | `presets.${string}`
+  | `onlineAddoninfo.${string}`;
 
 export interface PROFILE_STORE_SET {
   property: IProfileProperty;

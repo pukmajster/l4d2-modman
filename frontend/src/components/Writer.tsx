@@ -14,7 +14,7 @@ function wait(ms: number) {
 
 export default function Writer() {
   const [writingState, setWritingState] = useState("");
-  const [gameDir] = useConfigProperty("gameDir", gameDirAtom);
+  const [gameDir] = useConfigProperty<string>("gameDir", gameDirAtom);
   const [preset, setPreset] = useSelectedPreset();
   const [cache] = useRecoilState(cacheAtom);
 

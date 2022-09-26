@@ -16,6 +16,7 @@ import {
   searchTermAtom,
   selectedModIdsAtom,
 } from "@/state/library";
+import { profileAllOnlineAddoninfosAtom } from "@/state/profile";
 import {
   Box,
   CircularProgress,
@@ -25,7 +26,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import ModCard from "./ModCard";
 
 type SortingType = "name_asc" | "name_desc";
@@ -35,7 +36,12 @@ export default function ModLibrary() {
   const [cache] = useRecoilState(cacheAtom);
   const [preset, setPreset] = useSelectedPreset();
   const [selectedMods, setSelectedMods] = useRecoilState(selectedModIdsAtom);
-  const [gameDir] = useConfigProperty("gameDir", gameDirAtom);
+  const [gameDir] = useConfigProperty<string>("gameDir", gameDirAtom);
+  const profileAllOnlineAddoninfos = useRecoilValue(
+    profileAllOnlineAddoninfosAtom
+  );
+
+  console.log(profileAllOnlineAddoninfos);
 
   // -----------------------------------------------------------------------
   //  Search, filters, ...
@@ -61,8 +67,6 @@ export default function ModLibrary() {
   const [maxRows, setMaxRows] = useRecoilState(maxRowsAtom);
 
   const filteredAndSortedMods = useMemo(() => {
-    //if (!cache || !preset || !preset?.enabledMods) return [];
-
     let tempStorage: Mod[] = [];
     let i = 0;
 
@@ -205,9 +209,6 @@ export default function ModLibrary() {
     }
 
     setConfictingMods(tempConflictingMods);
-    console.log(occurencesOfFiles);
-
-    console.log(collectiveListOfFiles);
   }, [preset, cache]);
 
   // -----------------------------------------------------------------------
@@ -330,6 +331,11 @@ export default function ModLibrary() {
           {filteredAndSortedMods.map((mod) => (
             <ModCard
               {...mod}
+              addontitle={
+                mod.addontitle ??
+                profileAllOnlineAddoninfos[mod.id]?.title ??
+                mod.id
+              }
               key={mod.id}
               preset={preset}
               setPreset={setPreset}
