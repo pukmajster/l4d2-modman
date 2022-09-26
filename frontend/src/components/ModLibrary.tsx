@@ -318,7 +318,15 @@ export default function ModLibrary() {
           overflowY: "scroll",
         }}
       >
-        <Stack mr={3} spacing={2}>
+        <Stack
+          mr={3}
+          gap={2}
+          display="grid"
+          gridTemplateColumns={"repeat( auto-fill, minmax(210px, 1fr) )"}
+          gridAutoRows="minmax(min-content, max-content)"
+          //gridTemplateColumns={"repeat( auto-fill, minmax(350px, 1fr) )"}
+          alignItems="strech"
+        >
           {filteredAndSortedMods.map((mod) => (
             <ModCard
               {...mod}

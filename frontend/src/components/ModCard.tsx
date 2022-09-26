@@ -64,6 +64,172 @@ export default function ModCard(props: ModEntryProps) {
   // -----------------------------------------
 
   return (
+    <Stack
+      direction="column"
+      width="100%"
+      height={"auto"}
+      alignSelf="stretch"
+      bgcolor={"rgba(52,52,52,0.25)"}
+      borderRadius={1}
+      overflow="hidden"
+      sx={{
+        transition: "background-color 0.14s ease",
+        "&:hover": {
+          bgcolor: "rgba(52,52,52,0.5)",
+        },
+      }}
+    >
+      <Box
+        pb={0}
+        flex={1}
+        sx={{ contentVisibility: "visible" }}
+        textAlign={"left"}
+        flexDirection="column"
+        display={"flex"}
+      >
+        <Box
+          flex={1}
+          textAlign={"left"}
+          flexDirection="column"
+          //Wbgcolor={"rgba(52,52,52,0.25)"}
+          borderRadius={1}
+          overflow="hidden"
+          display={"flex"}
+        >
+          <Box width="100%" position={"relative"}>
+            <img
+              style={{
+                aspectRatio: "5/3", // Don't judge
+                height: "100%",
+                width: "100%",
+                opacity: isEnabled ? "1" : "0.5",
+              }}
+              src={`file://${props.gameDir}/addons/workshop/${props.id}.jpg`}
+            ></img>
+
+            <Box
+              component={"button"}
+              position={"absolute"}
+              top={0}
+              bottom={0}
+              right={0}
+              width="100%"
+              bgcolor="transparent"
+              display="flex"
+              p="0"
+              justifyContent={"end"}
+              alignItems={"end"}
+              onClick={() => toggleModEnable()}
+              border="none"
+              boxShadow="none"
+              sx={{ cursor: "pointer" }}
+            >
+              <Box
+                component={"button"}
+                position={"absolute"}
+                top={0}
+                bottom={0}
+                right={0}
+                width="100%"
+                bgcolor="transparent"
+                display="flex"
+                p="0"
+                justifyContent={"end"}
+                alignItems={"end"}
+                onClick={() => toggleModEnable()}
+                border="none"
+                boxShadow="none"
+                sx={{ cursor: "pointer" }}
+              >
+                {props.isConflicting && (
+                  <Box
+                    p={0.5}
+                    sx={{
+                      backdropFilter: "blur(15px)",
+                      bgcolor: "rgba(182,0,0,0.4)",
+                    }}
+                  >
+                    <Typography fontSize="12px">
+                      THIS MOD IS CONFLICTING WITH ANOTHER MOD!
+                    </Typography>
+                  </Box>
+                )}
+              </Box>
+            </Box>
+          </Box>
+
+          <Box
+            px={1.4}
+            width="100%"
+            display={"flex"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+            bgcolor={isEnabled ? "rgba(0,120,0,0.5)" : "rgba(120,120,120,0.5)"}
+            sx={{ backdropFilter: "blur(15px)" }}
+          >
+            <Typography variant="caption" lineHeight={0}>
+              {isEnabled ? "Enabled" : "Disabled"}
+            </Typography>
+            {isEnabled ? <CheckIcon /> : <CloseIcon />}
+          </Box>
+
+          <Box
+            flex={1}
+            p={1.4}
+            pb={1}
+            justifyContent="space-between"
+            display={"flex"}
+            flexDirection="column"
+          >
+            <Stack>
+              <Stack direction={"column"}>
+                <Typography variant="caption">
+                  {props?.addontitle ?? `${props.id}`}
+                  <Box component={"span"} pl={1}></Box>
+                </Typography>
+
+                <Typography
+                  variant="caption"
+                  fontSize={10}
+                  sx={{ opacity: 0.7 }}
+                >
+                  {props?.addonauthor}
+                </Typography>
+
+                <Box mt={1} display="flex" gap={1} flexWrap="wrap">
+                  {props?.categories?.map((cat: string) => (
+                    <Chip
+                      sx={{ borderRadius: "2px" }}
+                      label={cat}
+                      size="small"
+                    ></Chip>
+                  ))}
+                </Box>
+              </Stack>
+            </Stack>
+
+            <Stack mt={1} direction="row" spacing={1} alignItems="center">
+              <Button
+                size="small"
+                onClick={() => openModInBrowser(props.id)}
+                startIcon={<OpenInBrowserIcon />}
+              >
+                Workshop
+              </Button>
+            </Stack>
+
+            {/* {props.isConflicting && (
+            <Typography color="firebrick" fontSize="12px">
+              THIS MOD IS CONFLICTING WITH ANOTHER MOD!
+            </Typography>
+          )} */}
+          </Box>
+        </Box>
+      </Box>
+    </Stack>
+  );
+
+  return (
     <Stack direction="row" overflow={"hidden"} width="100%">
       {/* <Stack justifyContent={"center"}>
         <Checkbox onClick={handleSelectToggle} checked={isSelected}></Checkbox>
