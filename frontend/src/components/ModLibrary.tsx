@@ -29,7 +29,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import ModCard from "./ModCard";
 
-type SortingType = "name_asc" | "name_desc";
+type SortingType = "name_asc" | "name_desc" | "time_oldest" | "time_newest";
 type TypeOfMod = "any" | "enabled" | "disabled" | "conflicting" | "corrupt";
 
 export default function ModLibrary() {
@@ -40,8 +40,6 @@ export default function ModLibrary() {
   const profileAllOnlineAddoninfos = useRecoilValue(
     profileAllOnlineAddoninfosAtom
   );
-
-  console.log(profileAllOnlineAddoninfos);
 
   // -----------------------------------------------------------------------
   //  Search, filters, ...
@@ -68,14 +66,12 @@ export default function ModLibrary() {
 
   const filteredAndSortedMods = useMemo(() => {
     let tempStorage: Mod[] = [];
-    let i = 0;
 
     Object.keys(cache).map((keyName: string) => {
-      if (i > (maxRows ?? 0)) {
-        return;
-      }
-
-      let modName = cache[keyName]?.addontitle;
+      let modName =
+        cache[keyName]?.addontitle ??
+        profileAllOnlineAddoninfos[keyName]?.title ??
+        cache[keyName].id;
       let thisMod = cache[keyName] as Mod;
 
       // Check for mod type
@@ -126,19 +122,31 @@ export default function ModLibrary() {
         if (matchingFilters == 0) return;
       }
 
-      i++;
-
       tempStorage.push(thisMod);
 
       if (sortingType == "name_asc") {
         tempStorage = tempStorage.sort((a: Mod, b: Mod) =>
-          (a?.addontitle ?? "").localeCompare(b.addontitle ?? "")
+          (a?.addontitle ?? a.id).localeCompare(b.addontitle ?? a.id)
         );
       }
 
       if (sortingType == "name_desc") {
         tempStorage = tempStorage.sort((a: Mod, b: Mod) =>
           (b?.addontitle ?? "").localeCompare(a.addontitle ?? "")
+        );
+      }
+
+      if (sortingType == "time_oldest") {
+        tempStorage = tempStorage.sort(
+          (a: Mod, b: Mod) =>
+            Date.parse(a.timeModified) - Date.parse(b.timeModified)
+        );
+      }
+
+      if (sortingType == "time_newest") {
+        tempStorage = tempStorage.sort(
+          (a: Mod, b: Mod) =>
+            Date.parse(b.timeModified) - Date.parse(a.timeModified)
         );
       }
     });
@@ -308,6 +316,8 @@ export default function ModLibrary() {
             >
               <MenuItem value="name_asc">Name (Ascending)</MenuItem>
               <MenuItem value="name_desc">Name (Descending)</MenuItem>
+              <MenuItem value="time_newest">Time modified (latest)</MenuItem>
+              <MenuItem value="time_oldest">Time modified (oldest)</MenuItem>
             </TextField>
           </Stack>
         </Stack>
@@ -328,7 +338,7 @@ export default function ModLibrary() {
           //gridTemplateColumns={"repeat( auto-fill, minmax(350px, 1fr) )"}
           alignItems="strech"
         >
-          {filteredAndSortedMods.map((mod) => (
+          {filteredAndSortedMods.slice(0, maxRows).map((mod) => (
             <ModCard
               {...mod}
               addontitle={

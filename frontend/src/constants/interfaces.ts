@@ -24,6 +24,7 @@ export interface Mod {
   addoncontent_weaponmodel?: string;
   error?: string;
   categories?: string[];
+  timeModified: string;
 }
 
 export interface ModCache {

@@ -190,6 +190,9 @@ export async function buildCache() {
       }
 
       try {
+        const stats = fs.statSync(pakPath);
+        modInfo["timeModified"] = stats.mtime;
+
         // Open the VPK
         const vpk = new VPK(pakPath);
         vpk.load();
