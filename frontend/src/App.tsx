@@ -8,6 +8,18 @@ import { theme } from "./constants/theme";
 const App: React.FC = () => {
   return (
     <div>
+      <img
+        style={{
+          position: "fixed",
+          width: "100vw",
+          height: "100vh",
+          opacity: 0.09,
+          filter: "blur(12px)",
+          pointerEvents: "none",
+        }}
+        src="https://wallpaperset.com/w/full/4/9/f/82744.jpg"
+      />
+
       <ThemeProvider theme={theme}>
         <CssBaseline />
 
