@@ -1,6 +1,8 @@
 # l4d2-modman
 
-ModMan is a mod manager GUI for L4D2. Realistically this could work for any source engine game, but it's mainly focused around L4D2. 
+ModMan is a mod manager GUI for L4D2 for Windows and Linux (and probably Mac OS too). Realistically this could work for any source engine game, but it's mainly focused around L4D2. 
+
+![ModMan in action](/media/showcase.png)
 
 **THIS IS A LEGACY VERSION AND IT'S QUITE UNFINISHED!**  I'm letting this version of ModMan behind and integrating it's features in a new app. I have now become familiar with Electron and I plan on rewriting it all for a better version. Soon(tm).
 
