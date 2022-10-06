@@ -4,7 +4,7 @@ import { Preset } from "@/state/profile";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Box, Button, Chip, Stack, Typography } from "@mui/material";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
 
 import OpenInBrowserIcon from "@mui/icons-material/OpenInBrowser";
@@ -18,6 +18,7 @@ interface ModEntryProps extends Mod {
 
 export default function ModCard(props: ModEntryProps) {
   const isEnabled = props.preset?.enabledMods?.includes(props.id) ?? false;
+  const [isShown, setIsShown] = useState(false);
 
   function openModInBrowser(steamid: string) {
     window.externalApi.openLinkInBrowser(
@@ -69,7 +70,6 @@ export default function ModCard(props: ModEntryProps) {
       alignSelf="stretch"
       bgcolor={"rgba(52,52,52,0.25)"}
       borderRadius={1}
-      overflow="hidden"
       sx={{
         transition: "background-color 0.14s ease",
         "&:hover": {
@@ -80,10 +80,17 @@ export default function ModCard(props: ModEntryProps) {
       <Box
         pb={0}
         flex={1}
-        sx={{ contentVisibility: "visible" }}
         textAlign={"left"}
         flexDirection="column"
         display={"flex"}
+        sx={{
+          "&:hover .modCard__extra": {
+            visibility: "visible",
+            backdropFilter: "blur(22px) saturate(2)",
+          },
+        }}
+        onMouseEnter={() => setIsShown(true)}
+        onMouseLeave={() => setIsShown(false)}
       >
         <Box
           flex={1}
@@ -91,8 +98,8 @@ export default function ModCard(props: ModEntryProps) {
           flexDirection="column"
           //Wbgcolor={"rgba(52,52,52,0.25)"}
           borderRadius={1}
-          overflow="hidden"
           display={"flex"}
+          position="relative"
         >
           <Box width="100%" position={"relative"}>
             <img
@@ -166,7 +173,6 @@ export default function ModCard(props: ModEntryProps) {
             justifyContent={"space-between"}
             alignItems={"center"}
             bgcolor={isEnabled ? "rgba(0,120,0,0.8)" : "rgba(120,120,120,0.8)"}
-            sx={{ backdropFilter: "blur(15px)" }}
           >
             <Typography variant="caption" lineHeight={0}>
               {isEnabled ? "Enabled" : "Disabled"}
@@ -174,57 +180,75 @@ export default function ModCard(props: ModEntryProps) {
             {isEnabled ? <CheckIcon /> : <CloseIcon />}
           </Box>
 
-          <Box
-            flex={1}
-            p={1.4}
-            pb={1}
-            justifyContent="space-between"
-            display={"flex"}
-            flexDirection="column"
-          >
-            <Stack>
-              <Stack direction={"column"}>
-                <Typography variant="caption">
-                  {props?.addontitle ?? `${props.id}`}
-                  <Box component={"span"} pl={1}></Box>
-                </Typography>
+          {isShown && (
+            <Box
+              flex={1}
+              justifyContent="space-between"
+              display={"flex"}
+              flexDirection="column"
+              position={"absolute"}
+              top="100%"
+              left="0"
+              right="0"
+              zIndex={20}
+              bgcolor={"rgba(0,0,0,0.55)"}
+              visibility="hidden"
+              className="modCard__extra"
+              sx={
+                {
+                  // borderBottomLeftRadius: 5,
+                  // borderBottomRightRadius: 5,
+                }
+              }
+            >
+              <Stack p={1.4}>
+                <Stack direction={"column"}>
+                  <Typography variant="caption">
+                    {props?.addontitle ?? `${props.id}`}
+                    <Box component={"span"} pl={1}></Box>
+                  </Typography>
 
-                <Typography
-                  variant="caption"
-                  fontSize={10}
-                  sx={{ opacity: 0.7 }}
-                >
-                  {props?.addonauthor}
-                </Typography>
+                  <Typography
+                    variant="caption"
+                    fontSize={10}
+                    sx={{ opacity: 0.7 }}
+                  >
+                    {props?.addonauthor}
+                  </Typography>
 
-                <Box mt={1} display="flex" gap={1} flexWrap="wrap">
-                  {props?.categories?.map((cat: string) => (
-                    <Chip
-                      sx={{ borderRadius: "2px" }}
-                      label={cat}
-                      size="small"
-                    ></Chip>
-                  ))}
-                </Box>
+                  <Box mt={1} display="flex" gap={1} flexWrap="wrap">
+                    {props?.categories?.map((cat: string) => (
+                      <Chip
+                        sx={{ borderRadius: "2px" }}
+                        label={cat}
+                        size="small"
+                      ></Chip>
+                    ))}
+                  </Box>
+                </Stack>
               </Stack>
-            </Stack>
-
-            <Stack mt={1} direction="row" spacing={1} alignItems="center">
-              <Button
-                size="small"
-                onClick={() => openModInBrowser(props.id)}
-                startIcon={<OpenInBrowserIcon />}
+              <Stack
+                p={1.4}
+                pt={0}
+                direction="row"
+                spacing={1}
+                alignItems="center"
               >
-                Workshop
-              </Button>
-            </Stack>
-
-            {/* {props.isConflicting && (
+                <Button
+                  size="small"
+                  onClick={() => openModInBrowser(props.id)}
+                  startIcon={<OpenInBrowserIcon />}
+                >
+                  Workshop
+                </Button>
+              </Stack>
+              {/* {props.isConflicting && (
             <Typography color="firebrick" fontSize="12px">
               THIS MOD IS CONFLICTING WITH ANOTHER MOD!
             </Typography>
           )} */}
-          </Box>
+            </Box>
+          )}
         </Box>
       </Box>
     </Stack>

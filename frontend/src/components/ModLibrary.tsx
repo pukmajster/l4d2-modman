@@ -255,13 +255,17 @@ export default function ModLibrary() {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Stack direction={"row"} alignItems="center" flex={1}>
+          <Stack direction={"row"} alignItems="center" flex={1} pl={1}>
             {/* <Checkbox disabled></Checkbox>
             {selectedMods.length > 0 && (
               <Typography component="span">
                 Selected: {selectedMods.length}
               </Typography>
             )} */}
+
+            <Typography>
+              Mods shown: {Math.min(filteredAndSortedMods.length, maxRows)}
+            </Typography>
           </Stack>
 
           <Stack spacing={2} mx={2}>
@@ -272,57 +276,58 @@ export default function ModLibrary() {
             )}
           </Stack>
 
-          <Stack minWidth={"200px"} pr={1} alignItems="center">
-            <TextField
-              label="Number of mods to show"
-              fullWidth
-              select
-              value={maxRows}
-              onChange={(e) => setMaxRows(+e.target.value)}
-            >
-              <MenuItem value="30">30</MenuItem>
-              <MenuItem value="50">50</MenuItem>
-              <MenuItem value="100">100</MenuItem>
-              <MenuItem value="300">300</MenuItem>
-              <MenuItem value="999">All</MenuItem>
-            </TextField>
-          </Stack>
+          <Stack direction="row" spacing={1} mr={1}>
+            <Stack minWidth={"200px"} alignItems="center">
+              <TextField
+                label="Number of mods to show"
+                fullWidth
+                select
+                value={maxRows}
+                onChange={(e) => setMaxRows(+e.target.value)}
+              >
+                <MenuItem value="30">30</MenuItem>
+                <MenuItem value="50">50</MenuItem>
+                <MenuItem value="100">100</MenuItem>
+                <MenuItem value="300">300</MenuItem>
+                <MenuItem value="999">All</MenuItem>
+              </TextField>
+            </Stack>
 
-          <Stack minWidth={"200px"} pr={1} alignItems="center">
-            <TextField
-              label="Type of mod to show"
-              fullWidth
-              select
-              value={showOnlyTypeOfMod}
-              onChange={(e) =>
-                setShowOnlyTypeOfMods(e.target.value as TypeOfMod)
-              }
-            >
-              <MenuItem value="any">Any</MenuItem>
-              <MenuItem value="enabled">Enabled</MenuItem>
-              <MenuItem value="disabled">Disabled</MenuItem>
-              <MenuItem value="conflicting">Conflicting</MenuItem>
-              <MenuItem value="corrupt">Corrupt addoninfo</MenuItem>
-            </TextField>
-          </Stack>
+            <Stack minWidth={"200px"} alignItems="center">
+              <TextField
+                label="Type of mod to show"
+                fullWidth
+                select
+                value={showOnlyTypeOfMod}
+                onChange={(e) =>
+                  setShowOnlyTypeOfMods(e.target.value as TypeOfMod)
+                }
+              >
+                <MenuItem value="any">Any</MenuItem>
+                <MenuItem value="enabled">Enabled</MenuItem>
+                <MenuItem value="disabled">Disabled</MenuItem>
+                <MenuItem value="conflicting">Conflicting</MenuItem>
+                <MenuItem value="corrupt">Corrupt addoninfo</MenuItem>
+              </TextField>
+            </Stack>
 
-          <Stack minWidth={"200px"} pr={1} alignItems="center">
-            <TextField
-              label="Sorting"
-              fullWidth
-              select
-              value={sortingType}
-              onChange={(e) => setSortingType(e.target.value as SortingType)}
-            >
-              <MenuItem value="name_asc">Name (Ascending)</MenuItem>
-              <MenuItem value="name_desc">Name (Descending)</MenuItem>
-              <MenuItem value="time_newest">Time modified (latest)</MenuItem>
-              <MenuItem value="time_oldest">Time modified (oldest)</MenuItem>
-            </TextField>
+            <Stack minWidth={"200px"} alignItems="center">
+              <TextField
+                label="Sorting"
+                fullWidth
+                select
+                value={sortingType}
+                onChange={(e) => setSortingType(e.target.value as SortingType)}
+              >
+                <MenuItem value="name_asc">Name (Ascending)</MenuItem>
+                <MenuItem value="name_desc">Name (Descending)</MenuItem>
+                <MenuItem value="time_newest">Time modified (latest)</MenuItem>
+                <MenuItem value="time_oldest">Time modified (oldest)</MenuItem>
+              </TextField>
+            </Stack>
           </Stack>
         </Stack>
       </Stack>
-
       <Box
         flex="1"
         sx={{
@@ -337,6 +342,8 @@ export default function ModLibrary() {
           gridAutoRows="minmax(min-content, max-content)"
           //gridTemplateColumns={"repeat( auto-fill, minmax(350px, 1fr) )"}
           alignItems="strech"
+          sx={{ contentVisibility: "auto" }}
+          pb={"256px"}
         >
           {filteredAndSortedMods.slice(0, maxRows).map((mod) => (
             <ModCard
@@ -354,9 +361,18 @@ export default function ModLibrary() {
             />
           ))}
         </Stack>
-
-        <Box height={32}></Box>
-      </Box>
+      </Box>{" "}
+      {/* <Stack
+        direction="row"
+        alignItems="center"
+        bgcolor="#171717"
+        borderRadius="8px"
+        my={2}
+        py={1}
+        mr={3}
+      >
+        a
+      </Stack> */}
     </Box>
   );
 }
