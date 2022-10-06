@@ -87,7 +87,6 @@ async function createWindow() {
       webSecurity: app.isPackaged,
     },
   });
-  win.removeMenu();
 
   /* win.webContents.on("will-navigate", function (e, url) {
     e.preventDefault();
