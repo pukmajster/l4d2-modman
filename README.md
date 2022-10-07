@@ -6,7 +6,7 @@ ModMan is a mod manager GUI for L4D2 for Windows and Linux (and probably Mac OS 
 
 **THIS IS A LEGACY VERSION AND IT'S QUITE UNFINISHED!**  I'm letting this version of ModMan behind and integrating it's features in a new app. I have now become familiar with Electron and I plan on rewriting it all for a better version. Soon(tm).
 
-That being said, ModMad does actually do a bunch of cool stuff:
+That being said, ModMan does actually do a bunch of cool stuff:
 
 - It lets user sort and filter throught their mods by various categories and settings
 - Detect conflicting mods
